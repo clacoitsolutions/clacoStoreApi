@@ -9,7 +9,7 @@ export const getProductController = async (req, res) => {
 
         const result = await request.query('SELECT * FROM tbl_MainCategory');
 
-        console.log(result.recordset);
+        // console.log(result.recordset);
         res.json(result.recordset);
     } catch (err) {
         console.error('SQL error:', err);
