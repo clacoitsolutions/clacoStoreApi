@@ -1,6 +1,7 @@
 import express from "express";
 import pkg from "mssql";
 import exampleRoute from "./routes/exampleRoute.js";
+import categoryRoute from "./routes/categoryRoute.js"
 import dotenv from "dotenv"
 import {dbConfig} from "./config/db.js"; // Import the database configuration
 const {ConnectionPool} = pkg
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 
 // Import and use the product route
 app.use("/product", exampleRoute);
+app.use("/category", categoryRoute);
 
 
 app.get("/", (req,res)=>{
