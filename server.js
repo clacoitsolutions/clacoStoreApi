@@ -24,7 +24,7 @@ app.use("/category", categoryRoute);
 
 
 app.get("/", (req,res)=>{
-    res.send("hello")
+    res.send("hello claco team")
 })
 
 const PORT = process.env.PORT || 8080;
