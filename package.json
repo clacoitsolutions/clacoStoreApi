@@ -6,7 +6,12 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+<<<<<<< HEAD
     "start": "nodemon server.js"
+=======
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+>>>>>>> c3820e97383466e55d60d031bda15dae62d242b2
   },
   "keywords": [],
   "author": "aman giri",

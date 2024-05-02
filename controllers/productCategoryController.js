@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export const productCategory = async (req,res) => {
 
    try{
@@ -28,6 +29,37 @@ export const productCategory = async (req,res) => {
 }
 
 };
+=======
+export const productCategory = async (req, res) => {
+       try {
+           const { ProductCode, CatId, varId } = req.body;
+   
+           // Check if required properties are missing
+           if (!ProductCode || !CatId || !varId) {
+               return res.status(400).json({ error: 'Missing required parameters in request body' });
+           }
+   
+           const pool = req.pool;
+           await pool.connect();
+           const request = pool.request();
+   
+           request.input('ProductCode', ProductCode);
+           request.input('CatId', CatId);
+           request.input('varId', varId);
+           request.input('Action', 1);
+   
+           const result = await request.execute('proc_GetSingleProductView');
+   
+           const returnedData = result.recordset;
+   
+           res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+       } catch (err) {
+           console.error('SQL error:', err);
+           res.status(500).json({ error: 'Internal Server Error' });
+       }
+   };
+   
+>>>>>>> c3820e97383466e55d60d031bda15dae62d242b2
 
 
 

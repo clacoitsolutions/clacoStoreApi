@@ -117,4 +117,54 @@ export const addtoCartcontroller = async (req, res) => {
     }
 
 
+<<<<<<< HEAD
 }
+=======
+}
+export const ChangePassword = async (req, res) => {
+    try {
+        const { Mobile, oldpassword, newpassword } = req.body;
+
+        // Assuming req.pool is a valid database connection pool
+        const pool = req.pool;
+        const request = pool.request();
+
+        request.input('UserId', Mobile);
+        request.input('OldPassword', oldpassword);
+        request.input('NewPassword', newpassword);
+
+        const result = await request.execute('Proc_UpdatedChangePassword');
+
+        const returnedData = result.recordset;
+
+        // Check if the stored procedure returned data
+        if (returnedData && returnedData.length > 0) {
+            // Check if the old password provided matches the stored password
+            if (returnedData[0].Success === 1) {
+                res.status(200).json({ message: 'Password changed successfully' });
+
+            } 
+            else if (returnedData[0].Error)
+             {
+                // If the stored procedure returned an error message
+                res.status(400).json({ message: returnedData[0].Error });
+
+            }
+             else 
+            {
+                // If no success indicator or error message found
+                res.status(400).json({ message: 'Failed to change password' });
+            }
+
+        } 
+        else 
+        {
+            // If no data returned
+            res.status(400).json({ message: 'Failed to change password' });
+        }
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+>>>>>>> c3820e97383466e55d60d031bda15dae62d242b2
