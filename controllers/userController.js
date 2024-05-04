@@ -1,0 +1,170 @@
+export const createregistartionController = async (req, res) => {
+    try {
+        // Destructure data from the request body
+        const { Name, MobileNo, ReferCode, Email, Password } = req.body;
+
+        // Get the database pool from the request object
+        const pool = req.pool;
+
+        // Connect to the database
+        await pool.connect();
+
+        // Create a request object
+        const request = pool.request();
+        // Specify parameters with their values
+        request.input('name', Name);
+        request.input('mobileno', MobileNo);
+        request.input('UsedReferal', ReferCode);
+        request.input('EmailId', Email);
+        request.input('Password', Password);
+        request.input('Action', 1);
+
+        // Call the stored procedure to insert data
+        const result = await request.execute('Proc_InserCustomerAccountWeb');
+        // If your stored procedure returns data, you can access it from the result object
+        const returnedData = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data
+        res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+
+    } catch (err) {
+        //         // Handle errors
+        console.error('SQL error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+
+//Login Page Controller--- code by Abhishek Singh
+
+export const logincontroller = async (req, res) => {
+    try {
+        const { UserName, Password } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('UserName', UserName);
+        request.input('Password', Password);
+        request.input('Action', 5);
+
+        const result = await request.execute('Proc_GetLoginDetails');
+
+        const returnedData = result.recordset;
+
+        if (returnedData && returnedData.length > 0) {
+            const user = returnedData[0];
+            if (user.EmailAddress === UserName) {
+                res.status(200).json({ message: 'Login successful', data: user });
+            } else {
+                res.status(401).json({ error: 'Invalid username or password' });
+            }
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+
+    }
+    catch (error) {
+        console.error('SQL error', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const forgetpasswordcontroller = async (req,res) => {
+    try{
+
+        const{MobileNo} = req.body;
+
+        const pool = req.pool;
+
+        await pool.connect();
+        const request = pool.request();
+        request.input('mobile',MobileNo);
+
+
+        const result = await request.execute('ChangePassword');
+
+        const returnedData = result.recordset;
+
+        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
+
+    }
+    catch(error){
+        console.error('SQL error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+ 
+export const addtoCartcontroller = async (req, res) => {
+
+    try {
+
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+        const result = await request.query('SELECT * FROM CartList');
+        res.json(result.recordset);
+    } catch (err) {
+        console.error('SQL error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+
+<<<<<<< HEAD
+}
+=======
+}
+export const ChangePassword = async (req, res) => {
+    try {
+        const { Mobile, oldpassword, newpassword } = req.body;
+
+        // Assuming req.pool is a valid database connection pool
+        const pool = req.pool;
+        const request = pool.request();
+
+        request.input('UserId', Mobile);
+        request.input('OldPassword', oldpassword);
+        request.input('NewPassword', newpassword);
+
+        const result = await request.execute('Proc_UpdatedChangePassword');
+
+        const returnedData = result.recordset;
+
+        // Check if the stored procedure returned data
+        if (returnedData && returnedData.length > 0) {
+            // Check if the old password provided matches the stored password
+            if (returnedData[0].Success === 1) {
+                res.status(200).json({ message: 'Password changed successfully' });
+
+            } 
+            else if (returnedData[0].Error)
+             {
+                // If the stored procedure returned an error message
+                res.status(400).json({ message: returnedData[0].Error });
+
+            }
+             else 
+            {
+                // If no success indicator or error message found
+                res.status(400).json({ message: 'Failed to change password' });
+            }
+
+        } 
+        else 
+        {
+            // If no data returned
+            res.status(400).json({ message: 'Failed to change password' });
+        }
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+>>>>>>> c3820e97383466e55d60d031bda15dae62d242b2

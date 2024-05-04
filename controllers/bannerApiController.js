@@ -1,4 +1,4 @@
-export const getCategory = async (req, res) => {
+export const bannerApiController =async (req,res) =>{
     try {
 
 
@@ -7,7 +7,7 @@ export const getCategory = async (req, res) => {
         const request = pool.request();
 
 
-        const result = await request.query('SELECT * FROM tbl_MainCategory');
+        const result = await request.query('SELECT * FROM tbl_TopSliderBanner');
 
         // console.log(result.recordset);
         res.json(result.recordset);
@@ -16,4 +16,3 @@ export const getCategory = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
- 
