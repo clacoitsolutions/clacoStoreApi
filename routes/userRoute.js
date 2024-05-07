@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword,AddReview,Address} from "../controllers/userController.js";
+import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword} from "../controllers/userController.js";
 
 
 
@@ -14,11 +14,5 @@ router.post("/postLogin",logincontroller);
 router.post("/forget",forgetpasswordcontroller)
 
 router.post("/addToCart",addtoCartcontroller); 
-
-router.put("/",ChangePassword);
-
-router.get("/AddReview",AddReview);
-
-router.post("/Address",Address);
 
 export default router;

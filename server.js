@@ -5,8 +5,13 @@ import categoryRoute from "./routes/categoryRoute.js"
 import dotenv from "dotenv"
 import userRoute from "./routes/userRoute.js";
 import bannerApiRoute from "./routes/bannerApiRoute.js";
-import productCategoryRoute from "./routes/productcategoryRoute.js"; 
-import bodyParser from "body-parser";
+
+import productCategoryRoute from "./routes/productcategoryRoute.js";
+import deliverAdress from  "./routes/DeliveryAddressRoute.js";
+import bodyparser from "body-parser";
+ 
+import GetCity from "./routes/CityStateRoute.js";
+import getorderlist from "./routes/OrderListRoute.js";
 import {dbConfig} from "./config/db.js"; // Import the database configuration
 import trackingorderRoute from "./routes/trackingorderRoute.js";
 import mywalletRoute from "./routes/mywalletRoute.js";
@@ -23,7 +28,8 @@ dotenv.config();
 const pool = new ConnectionPool(dbConfig);
 
 // Middleware to add the database pool to request object
-app.use(bodyParser.json());
+// Parse JSON bodies
+app.use(bodyparser.json());
 app.use((req, res, next) => {
     req.pool = pool;
     next();
@@ -35,8 +41,6 @@ app.use("/category", categoryRoute);
 app.use("/",userRoute);
 app.use("/",bannerApiRoute);
 app.use("/",productCategoryRoute);
-app.use("/",trackingorderRoute)
-app.use("/",mywalletRoute);
 
 
 app.get("/", (req,res)=>{

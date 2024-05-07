@@ -117,6 +117,9 @@ export const addtoCartcontroller = async (req, res) => {
     }
 
 
+<<<<<<< HEAD
+}
+=======
 }
 export const ChangePassword = async (req, res) => {
     try {
@@ -163,7 +166,6 @@ export const ChangePassword = async (req, res) => {
         console.error('Error changing password:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-};
  
 
 export const AddReview = async (req,res)=>{

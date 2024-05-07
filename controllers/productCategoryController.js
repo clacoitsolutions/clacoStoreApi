@@ -1,128 +1,33 @@
-export const productCategory = async (req, res) => {
-       try {
-           const { ProductCode, CatId, varId } = req.body;
-   
-           // Check if required properties are missing
-           if (!ProductCode || !CatId || !varId) {
-               return res.status(400).json({ error: 'Missing required parameters in request body' });
-           }
-   
-           const pool = req.pool;
-           await pool.connect();
-           const request = pool.request();
-   
-           request.input('ProductCode', ProductCode);
-           request.input('CatId', CatId);
-           request.input('varId', varId);
-           request.input('Action', 1);
-   
-           const result = await request.execute('proc_GetSingleProductView');
-   
-           const returnedData = result.recordset;
-   
-           res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
-       } catch (err) {
-           console.error('SQL error:', err);
-           res.status(500).json({ error: 'Internal Server Error' });
-       }
-   };
+export const productCategory = async (req,res) => {
 
+   try{
 
+          const {ProductCode,CatId,VarId,action}=req.body;
+          
+          const pool = req.pool;
+          await pool.connect();
+          const request = pool.request();
 
-   export const cancelproduct = async (req,res) => {
+          request.input('ProductCode',ProductCode);
+          request.input('CatId',CatId);
+          request.input('varId',VarId);
+          request.input('Action',1);
 
-    try{
+          const result = await request.execute('proc_GetSingleProductView');
 
-        const { ProductCode, OrderId} = req.body;
+          const returnedData  = result.recordset;
 
-        const pool = req.pool;
-        await pool.connect();
-        const request = pool.request();
+          res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
 
-        request.input('ProductCode',ProductCode);
-        request.input('OrderId',OrderId);
-        request.input('Action',1)
-
-        const result = await request.execute('Proc_CancelItemOrder');
-        const returnedData = result.recordset;
-
-        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
-
-
-    }
-     catch(error){
-        console.error('sql server',err);
-        res.status(500).json({error:'Internal Server Error'});
-     }
-
+  
    }
+        catch (err) {
+    //         // Handle errors
+            console.error('SQL error:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+}
 
-   export const Pincode = async (req,res)=>{
-    try{
-        const{PinCode} = req.body;
-
-        const pool = req.pool;
-        await pool.connect();
-        const request = pool.request();
-
-        request.input('PinCode',PinCode);
-        request.input('Action',3)
-
-        const result = await request.execute('proc_InsertUpdatePinCode');
-
-        const returnedData=result.recordset;
-
-        res.status(200).json({messag:'i love u'})
-    }
-    catch(error){
-        console.error('sql server',error);
-        res.status(502).json({error:'i hate u'});
-    }
-   }
-
-
-
-   export const CheckOut = async (req,res) =>{
-
-    try{
-
-        const { CustomerId,GrossPayable,deliverycharges,iscoupenapplied,CoupenAmout,DisAmt,DeliveryTo,Paymode,status,NetTotal,Stockisted } =req.body;
-
-        const pool = req.pool;
-        await pool.connect();
-        const request = pool.request();
-
-        request.input('CustomerId',CustomerId)
-        request.input('grossamount',GrossPayable)
-        request.input('deliverycharges',deliverycharges)
-        request.input('iscoupenapplied',iscoupenapplied)
-        request.input('coupenamount',CoupenAmout)
-        request.input('discountamount',DisAmt)
-        request.input('deliveryaddressid',DeliveryTo)
-        request.input('paymentmode',Paymode)
-        request.input('paymentstatus',status)
-        request.input('NetPayable',NetTotal)
-        request.input('StockiestId',Stockisted)
-         
-
-        const result = await request.execute('Proc_InsertOnlineOrder');
-
-        const returnedData = result.recordset;
-
-        res.status(200).json({messag:'Inserted Successfully',data:returnedData})
-
-
-    }
-
-    catch(error){
-        console.error('sql server',error)
-        res.status(500).json({error:'Internal Server Error'})
-    }
- 
-   };
-    
-   
-   
+};
 
 
 
