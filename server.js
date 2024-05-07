@@ -8,6 +8,9 @@ import bannerApiRoute from "./routes/bannerApiRoute.js";
 import productCategoryRoute from "./routes/productcategoryRoute.js"; 
 import bodyParser from "body-parser";
 import {dbConfig} from "./config/db.js"; // Import the database configuration
+import trackingorderRoute from "./routes/trackingorderRoute.js";
+import mywalletRoute from "./routes/mywalletRoute.js";
+
 
 const {ConnectionPool} = pkg
 const app = express();
@@ -32,13 +35,15 @@ app.use("/category", categoryRoute);
 app.use("/",userRoute);
 app.use("/",bannerApiRoute);
 app.use("/",productCategoryRoute);
+app.use("/",trackingorderRoute)
+app.use("/",mywalletRoute);
 
 
 app.get("/", (req,res)=>{
     res.send("hello claco team")
 })
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9090;
 app.listen(PORT, () => {
     console.log(`Server is working on ${PORT}`);
 });

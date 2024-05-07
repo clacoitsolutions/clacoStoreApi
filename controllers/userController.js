@@ -164,3 +164,73 @@ export const ChangePassword = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+ 
+
+export const AddReview = async (req,res)=>{
+    try{
+        const {CustomerId,ProductCode,reviewstatus,image,CustomerName} =req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request= pool.request();
+
+        request.input('CustomerId',CustomerId);
+        request.input('ProductCode',ProductCode);
+        request.input('reviewstatus',reviewstatus);
+        request.input('image',image);
+        request.input('CustomerName',CustomerName);
+
+
+        const result = await request.execute('proc_addReview');
+
+        const returnedData = result.recordset;
+
+        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
+
+    }
+
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+export const Address = async (req,res)=>{
+
+    try{
+        const { CustomerId,Name,MobileNo,PinCode,Locality,Address,StateId,CityId,Landmark,AlternativeMobileno,OfferType,Latitude,Longitude,address2 }= req.body;
+
+        const pool= req.pool;
+        await pool.connect();
+
+        const request = pool.request();
+
+        request.input('CustomerId',CustomerId);
+        request.input('name',Name);
+        request.input('mobileno',MobileNo);
+        request.input('pincode',PinCode);
+        request.input('locality',Locality);
+        request.input('address',Address);
+        request.input('stateid',StateId);
+        request.input('cityname',CityId);
+        request.input('landmark',Landmark);
+        request.input('altmobileno',AlternativeMobileno);
+        request.input('addresstype',OfferType);
+        request.input('latitude',Latitude);
+        request.input('longitude',Longitude);
+        request.input('adress2',address2);
+
+
+        const result = await request.execute('proc_InsertDeliveryAddress');
+
+        const returned = result.recordset;
+
+        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+}
