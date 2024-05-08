@@ -1,28 +1,23 @@
 import express from "express";
 import pkg from "mssql";
 import exampleRoute from "./routes/exampleRoute.js";
-import categoryRoute from "./routes/categoryRoute.js"
-import dotenv from "dotenv"
+import categoryRoute from "./routes/categoryRoute.js";
+import dotenv from "dotenv";
 import userRoute from "./routes/userRoute.js";
 import bannerApiRoute from "./routes/bannerApiRoute.js";
-
 import productCategoryRoute from "./routes/productcategoryRoute.js";
 import deliverAdress from  "./routes/DeliveryAddressRoute.js";
 import bodyparser from "body-parser";
- 
 import GetCity from "./routes/CityStateRoute.js";
 import getorderlist from "./routes/OrderListRoute.js";
-import {dbConfig} from "./config/db.js"; // Import the database configuration
+import { dbConfig } from "./config/db.js"; // Import the database configuration
 import trackingorderRoute from "./routes/trackingorderRoute.js";
 import mywalletRoute from "./routes/mywalletRoute.js";
 
-
-const {ConnectionPool} = pkg
+const { ConnectionPool } = pkg;
 const app = express();
- 
-dotenv.config();
- 
 
+dotenv.config();
 
 // Create a connection pool using the imported configuration
 const pool = new ConnectionPool(dbConfig);
@@ -35,17 +30,35 @@ app.use((req, res, next) => {
     next();
 });
 
+// CORS middleware
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+    );
+    res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    next();
+});
+
 // Import and use the product route
 app.use("/product", exampleRoute);
 app.use("/category", categoryRoute);
-app.use("/",userRoute);
-app.use("/",bannerApiRoute);
-app.use("/",productCategoryRoute);
+app.use("/", userRoute);
+app.use("/", bannerApiRoute);
+app.use("/", productCategoryRoute);
+app.use("/", deliverAdress);
+app.use("/", GetCity);
+app.use("/", getorderlist);
+app.use("/", trackingorderRoute);
+app.use("/", mywalletRoute);
 
-
-app.get("/", (req,res)=>{
-    res.send("hello claco team")
-})
+app.get("/", (req, res) => {
+    res.send("hello claco team");
+});
 
 const PORT = process.env.PORT || 9090;
 app.listen(PORT, () => {
