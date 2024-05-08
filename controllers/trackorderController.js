@@ -75,3 +75,32 @@ export const ReturnOrder = async (req,res) =>{
         res.status(500).json({error:'Internal Server Error'});
     }
 };
+
+
+export const Wishlist =async (req,res)=>{
+
+    try{
+
+        const {ProductId,OrderId}= req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request= pool.request();
+
+
+        request.input("ProductId",ProductId);
+        request.input("OrderId",OrderId);
+        request.input("Action",81);
+
+        const result = await request.execute('proc_BindCustomerDashBoard');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Whishlist Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}
+ 

@@ -9,7 +9,7 @@ export const getCity = async (req, res) => {
 
 
 
-    const result = await request.query(`SELECT ID, CityName FROM CityMaster WHERE StateId='${id}'`);
+    const result = await request.query("select * from citymaster");
 
     const cities = result.recordset;
 

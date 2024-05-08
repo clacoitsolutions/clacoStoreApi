@@ -15,7 +15,8 @@ import getorderlist from "./routes/OrderListRoute.js";
 import {dbConfig} from "./config/db.js"; // Import the database configuration
 import trackingorderRoute from "./routes/trackingorderRoute.js";
 import mywalletRoute from "./routes/mywalletRoute.js";
-
+import SearchRoute from "./routes/SearchRoute.js";
+import FillterRoute from "./routes/FillterRoute.js";
 
 const {ConnectionPool} = pkg
 const app = express();
@@ -41,7 +42,9 @@ app.use("/category", categoryRoute);
 app.use("/",userRoute);
 app.use("/",bannerApiRoute);
 app.use("/",productCategoryRoute);
-
+app.use("/",SearchRoute);
+app.use("/",FillterRoute);
+app.use("/",trackingorderRoute);
 
 app.get("/", (req,res)=>{
     res.send("hello claco team")

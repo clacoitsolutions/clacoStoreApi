@@ -116,6 +116,8 @@ export const addtoCartcontroller = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 
+
+
 }
 
 export const ChangePassword = async (req, res) => {
