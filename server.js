@@ -15,6 +15,7 @@ import trackingorderRoute from "./routes/trackingorderRoute.js";
 import mywalletRoute from "./routes/mywalletRoute.js";
 import SearchRoute from "./routes/SearchRoute.js";
 import FillterRoute from "./routes/FillterRoute.js";
+import myprofileRoute from "./routes/myprofileRoute.js"
 
 const {ConnectionPool} = pkg
 const app = express();
@@ -60,6 +61,7 @@ app.use("/", GetCity);
 app.use("/", getorderlist);
 app.use("/", trackingorderRoute);
 app.use("/", mywalletRoute);
+app.use("/",myprofileRoute);
 
 app.get("/", (req, res) => {
     res.send("hello claco team");

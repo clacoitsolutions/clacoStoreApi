@@ -27,3 +27,32 @@ export const orderlistcontroller = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+
+export const deletecart = async (req,res)=>{
+
+    try{
+        const{CustomerID,cartlistid}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+        request.input('UserCode',CustomerID);
+        request.input('ProductID',cartlistid);
+        request.input('Action',1);
+
+        const result = await request.execute('proc_RemoveFromCart');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Delete Successfully",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}

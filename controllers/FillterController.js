@@ -1,27 +1,27 @@
 export const color = async (req, res) => {
     try {
-        const { ColorName, ColorValue, ProductId } = req.body;
+        const { Id } = req.body;
 
         // Assuming req.pool is the SQL Server connection pool
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        // Assuming Id, ColorName, ColorValue, and ProductId are properties in req.body
-
+        // Assuming Id is the ID you want to use to fetch data from the database
         const query = `
-            INSERT INTO mst_Color (ColorName, ColorValue, ProductId)
-            VALUES (@ColorName, @ColorValue, @ProductId)
+            SELECT *
+            FROM mst_Color
+            WHERE Id = @Id
         `;
+      
+        request.input('Id', Id);
 
-        request.input('ColorName', ColorName);
-        request.input('ColorValue', ColorValue);
-        request.input('ProductId', ProductId);
+        // Execute the query
+        const result = await request.query(query);
 
-        // Execute the insert query
-        await request.query(query);
+        // Process the result if needed
 
-        res.status(201).json({ message: 'Data Inserted Successfully' });
+        res.status(201).json({ message: 'Data Fetched Successfully', data: result.recordset });
     } catch (error) {
         console.error('SQL Server error:', error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -32,43 +32,44 @@ export const color = async (req, res) => {
 
 export const size = async (req, res) => {
     try {
-        const { Size_Name, Size_Value, ProductId } = req.body;
+        const { Id } = req.body;
 
         // Assuming req.pool is the SQL Server connection pool
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        // Assuming SizeName, SizeValue, and ProductId are properties in req.body
-
+        // Assuming Id is the ID you want to use to fetch data from the database
         const query = `
-            INSERT INTO mst_Size (Size_Name, Size_Value, ProductId)
-            VALUES (@Size_Name, @Size_Value, @ProductId)
+            SELECT *
+            FROM mst_size
+            WHERE Id = @Id
         `;
+      
+        request.input('Id', Id);
 
-        request.input('Size_Name', Size_Name);
-        request.input('Size_Value', Size_Value);
-        request.input('ProductId', ProductId);
+        // Execute the query
+        const result = await request.query(query);
 
-        // Execute the insert query
-        await request.query(query);
+        // Process the result if needed
 
-        res.status(201).json({ message: 'Data Inserted Successfully' });
+        res.status(201).json({ message: 'Data Fetched Successfully', data: result.recordset });
     } catch (error) {
         console.error('SQL Server error:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
 
+
 export const LowToHigh = async (req, res) => {
     try {
-        const { CategoryId } = req.body;
+        const { ProductId } = req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        request.input('CatId', CategoryId);
+        request.input('ProductId', ProductId);
         request.input('Action', 8);
 
         // store procedure to call
@@ -79,7 +80,7 @@ export const LowToHigh = async (req, res) => {
         returnedData.sort((a, b) => a.Price - b.Price);
 
          
-        const filteredData = returnedData.filter(item => item.CategoryId === CategoryId);
+        const filteredData = returnedData.filter(item => item.ProductCode === ProductCode);
 
         res.status(200).json({ message: " datan Inserted Successfully", data: filteredData });
     } catch (error) {
