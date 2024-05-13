@@ -235,3 +235,63 @@ export const Address = async (req,res)=>{
     }
 
 }
+
+
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+// Initialize Firebase app
+const firebaseConfig = {
+    apiKey: "AIzaSyCz22UHSeOXoKQJVmRUQACJZEoh_guEP-w",
+    authDomain: "clacostore-7303d.firebaseapp.com",
+    projectId: "clacostore-7303d",
+    storageBucket: "clacostore-7303d.appspot.com",
+    messagingSenderId: "811975379858",
+    appId: "1:811975379858:web:eecd652c1f6c7a23c3cf4b",
+    measurementId: "G-JBPM0JKMD9"
+  };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+export const loginotpcontroller = async (req, res) => {
+    try {
+        const { Mobile } = req.body; // Assuming Mobile is the key for mobile number in the request body
+
+        // Generate OTP
+        const otp = Math.floor(100000 + Math.random() * 900000);
+
+        // Send OTP to the user's mobile number using Firebase Admin SDK
+        const otpSent = await sendOTPviaFirebase(Mobile, otp);
+
+        if (otpSent) {
+            // OTP sent successfully, return response to the client
+            res.status(200).json({ message: 'OTP sent successfully' });
+        } else {
+            // Failed to send OTP
+            res.status(500).json({ error: 'Failed to send OTP' });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+// Function to send OTP via Firebase Admin SDK
+async function sendOTPviaFirebase(mobileNumber, otp) {
+    try {
+        // Send OTP using Firebase Admin SDK
+        await auth.createUser({ phoneNumber: mobileNumber });
+        // Assuming user is already created and you want to update their phone number
+        await auth.updateUser(mobileNumber, { phoneNumber: mobileNumber });
+
+        // Send SMS with OTP using your preferred SMS service provider
+        // For example, you can use Twilio, Nexmo, etc.
+        // Code to send SMS goes here
+
+        return true;
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        return false;
+    }
+}

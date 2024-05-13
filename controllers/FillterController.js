@@ -42,7 +42,7 @@ export const size = async (req, res) => {
         // Assuming Id is the ID you want to use to fetch data from the database
         const query = `
             SELECT *
-            FROM mst_size
+            FROM tbl_OnlineOrderDetail
             WHERE Id = @Id
         `;
       

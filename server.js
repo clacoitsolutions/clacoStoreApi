@@ -59,7 +59,7 @@ app.use("/",trackingorderRoute);
 app.use("/", deliverAdress);
 app.use("/", GetCity);
 app.use("/", getorderlist);
-app.use("/", trackingorderRoute);
+ 
 app.use("/", mywalletRoute);
 app.use("/",myprofileRoute);
 
@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
     res.send("hello claco team");
 });
 
-const PORT = process.env.PORT || 9090;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is working on ${PORT}`);
 });

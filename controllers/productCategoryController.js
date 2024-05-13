@@ -72,7 +72,7 @@ export const productCategory = async (req, res) => {
 
         const returnedData=result.recordset;
 
-        res.status(200).json({messag:'i love u'})
+        res.status(200).json({message:'i love u'})
     }
     catch(error){
         console.error('sql server',error);
@@ -80,63 +80,38 @@ export const productCategory = async (req, res) => {
     }
    }
 
+ 
+   export const checkoutsAccount = async (req, res) => {
+    try {
+        const { OrderId } = req.body;
 
-
-   export const CheckOut = async (req,res) =>{
-
-    try{
-
-        const { CustomerId,GrossPayable,deliverycharges,iscoupenapplied,CoupenAmout,DisAmt,DeliveryTo,Paymode,status,NetTotal,Stockisted } =req.body;
-
+        // Assuming req.pool is the SQL Server connection pool
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        request.input('CustomerId',CustomerId)
-        request.input('grossamount',GrossPayable)
-        request.input('deliverycharges',deliverycharges)
-        request.input('iscoupenapplied',iscoupenapplied)
-        request.input('coupenamount',CoupenAmout)
-        request.input('discountamount',DisAmt)
-        request.input('deliveryaddressid',DeliveryTo)
-        request.input('paymentmode',Paymode)
-        request.input('paymentstatus',status)
-        request.input('NetPayable',NetTotal)
-        request.input('StockiestId',Stockisted)
-         
+        // Assuming Id is the ID you want to use to fetch data from the database
+        const query = `
+            SELECT GrossAmount,DeliveryCharges,IsCoupenApplied,CoupenAmount,DiscountAmount,DeliveryAddressId,PaymentMode,PaymentStatus,NetPayable,StockiestId
+            FROM tbl_OnlineOrderDetail
+            WHERE OrderId = @OrderId
+        `;
+      
+        request.input('OrderId', OrderId);
 
-        const result = await request.execute('Proc_InsertOnlineOrder');
+        // Execute the query
+        const result = await request.query(query);
 
-        const returnedData = result.recordset;
+        // Process the result if needed
 
-        res.status(200).json({messag:'Inserted Successfully',data:returnedData})
-
-
+        res.status(201).json({ message: 'Data Fetched Successfully', data: result.recordset });
+    } catch (error) {
+        console.error('SQL Server error:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
+};
 
-    catch(error){
-        console.error('sql server',error)
-        res.status(500).json({error:'Internal Server Error'})
-    }
- 
-   };
-    
-   
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 
 
 //  // controllers/productController.js

@@ -1,28 +1,40 @@
-export const trackorder = async (req,res)=>{
+export const trackorder = async (req, res) => {
+    try {
+        // Extract orderId from request body
+        const { OrderId } = req.body;
 
-    try{
-        const {OrderId}=req.body;
+        // Check if OrderId is provided
+        if (!OrderId) {
+            return res.status(400).json({ error: 'OrderId is required' });
+        }
 
+        console.log('OrderId:', OrderId);
+ 
         const pool = req.pool;
         await pool.connect();
-        const request = pool.request();
+        
+        const request = await pool.request();
+        
+        
 
-        request.input('OrderId',OrderId);
-        request.input('Action',1)
+        // Set input parameters for the stored procedure
+        request.input('OrderId', OrderId);
+        request.input('Action', 1);
 
+        // Execute the stored procedure
         const result = await request.execute('Proc_OrderTracking');
-        // If your stored procedure returns data, you can access it from the result object
-        const returnedData = result.recordset; // Assuming the returned data is in the form of a recordset
 
-        // Send a success response along with the returned data
-        res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
-    }
-    catch (err) {
-        //         // Handle errors
+
+        const returnedData = result.recordset;
+ 
+        // Send a success response along with the order status
+        res.status(200).json({ message: 'Order status retrieved successfully', data: returnedData });
+    } catch (err) {
+        // Handle errors
         console.error('SQL error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-}
+};
 
 export const cancelorder = async (req,res) =>{
   
