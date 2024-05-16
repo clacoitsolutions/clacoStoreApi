@@ -37,7 +37,6 @@ export const createregistartionController = async (req, res) => {
 
 
 //Login Page Controller--- code by Abhishek Singh
-
 export const logincontroller = async (req, res) => {
     try {
         const { UserName, Password } = req.body;
@@ -56,7 +55,7 @@ export const logincontroller = async (req, res) => {
 
         if (returnedData && returnedData.length > 0) {
             const user = returnedData[0];
-            if (user.EmailAddress === UserName) {
+            if (user.EmailAddress == UserName) {
                 res.status(200).json({ message: 'Login successful', data: user });
             } else {
                 res.status(401).json({ error: 'Invalid username or password' });
