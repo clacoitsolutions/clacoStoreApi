@@ -11,6 +11,13 @@ export const createregistartionController = async (req, res) => {
 
         // Create a request object
         const request = pool.request();
+
+        if(!Name || !Email || !Password){
+            res.status(400).json({message:'Please field content'})
+        }
+
+
+
         // Specify parameters with their values
         request.input('name', Name);
         request.input('mobileno', MobileNo);
@@ -55,7 +62,7 @@ export const logincontroller = async (req, res) => {
 
         if (returnedData && returnedData.length > 0) {
             const user = returnedData[0];
-            if (user.EmailAddress == UserName) {
+            if (user.MobileNo == UserName) {
                 res.status(200).json({ message: 'Login successful', data: user });
             } else {
                 res.status(401).json({ error: 'Invalid username or password' });
@@ -114,9 +121,7 @@ export const addtoCartcontroller = async (req, res) => {
         console.error('SQL error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-
-
-
+ 
 }
 
 export const ChangePassword = async (req, res) => {
@@ -237,7 +242,7 @@ export const Address = async (req,res)=>{
 
 
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword }from "firebase/auth";
 
 // Initialize Firebase app
 const firebaseConfig = {
