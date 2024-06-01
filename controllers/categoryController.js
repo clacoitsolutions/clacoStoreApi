@@ -1,13 +1,14 @@
 export const getCategory = async (req, res) => {
     try {
-
+       
+ 
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
 
-        const result = await request.query('SELECT * FROM tbl_MainCategory');
+        const result = await request.query('select * from tbl_MainCategory where ParrentCategoryId=0');
 
         // console.log(result.recordset);
         res.json(result.recordset);

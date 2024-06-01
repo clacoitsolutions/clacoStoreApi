@@ -4,7 +4,7 @@ export const bannerApiController = async (req, res) => {
         await pool.connect();
         const request = pool.request();
 
-        const result = await request.query('SELECT * FROM tbl_MainCategory');
+        const result = await request.query('SELECT * FROM tbl_TopSliderBanner');
 
         // Filter out records with null values
         const filteredData = result.recordset.filter(record => {
@@ -18,3 +18,4 @@ export const bannerApiController = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
