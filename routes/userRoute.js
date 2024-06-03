@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword,loginotpcontroller,MyProfile,MyProfiles} from "../controllers/userController.js";
+import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword,loginotpcontroller,MyProfile,MyProfiles } from "../controllers/userController.js";
  
 
 
@@ -22,6 +22,6 @@ router.post("/otplogin",loginotpcontroller)
 
 router.get("/myProfile",MyProfile)
 
-router.put("/myProfiles",MyProfiles)
+router.put("/myProfiles",MyProfiles) 
 
 export default router;

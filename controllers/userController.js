@@ -352,7 +352,7 @@ export const MyProfiles = async (req,res)=>{
             request.input('Name', Name);
             request.input('MobileNo', MobileNo);
             request.input('Email', Email);
-            request.input('Action', 1); // Assuming 1 is for update action
+            request.input('Action', 9); // Assuming 1 is for update action
     
             const result = await request.execute('proc_BindCustomerDashBoard');
             const returned = result.recordset;
