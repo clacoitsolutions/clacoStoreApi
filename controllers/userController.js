@@ -365,3 +365,64 @@ export const MyProfiles = async (req,res)=>{
 }
 
 
+
+export const Viewbilldetails = async (req,res)=>{
+
+    try{
+        const{OrderID}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+       
+        request.input('OrderOd',OrderID);
+        request.input('Action',1);
+
+        const result = await request.execute('proc_PrintonlineInvoice');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+
+
+
+export const getOrderConfirmDetails = async (req,res)=>{
+
+    try{
+        const{OrderID}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+       
+        request.input('OrderId',OrderID);
+        request.input('Action',1);
+
+        const result = await request.execute('GetOrderConfirmDetails');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+

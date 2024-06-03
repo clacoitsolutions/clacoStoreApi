@@ -111,6 +111,72 @@ export const productCategory = async (req, res) => {
     }
 };
 
+
+
+
+export const getProductDetailsprice = async (req,res)=>{
+
+    try{
+        const{CatId,search,Min,Max}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+        request.input('CatId',CatId);
+       
+        request.input('Max',Max);
+        request.input('Min',Min);
+        request.input('search',search);
+        
+        request.input('Action',821);
+
+        const result = await request.execute('proc_GetSingleProductView');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+
+export const getProductDetails = async (req,res)=>{
+
+    try{
+        const{productId,CatId}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+        request.input('CatId',CatId);
+        request.input('productId',productId);
+        request.input('Action',1);
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
   
 
 
