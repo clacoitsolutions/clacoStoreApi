@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword,loginotpcontroller} from "../controllers/userController.js";
+import { createregistartionController , logincontroller, forgetpasswordcontroller,addtoCartcontroller,ChangePassword,loginotpcontroller,MyProfile,MyProfiles} from "../controllers/userController.js";
  
 
 
@@ -16,8 +16,12 @@ router.post("/forget",forgetpasswordcontroller)
 
 router.post("/addToCart",addtoCartcontroller); 
 
-router.post("/changepassword",ChangePassword)
+router.put("/changepassword",ChangePassword)
 
 router.post("/otplogin",loginotpcontroller)
+
+router.get("/myProfile",MyProfile)
+
+router.put("/myProfiles",MyProfiles)
 
 export default router;

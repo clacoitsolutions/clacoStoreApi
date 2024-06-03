@@ -131,7 +131,8 @@ export const ChangePassword = async (req, res) => {
         // Assuming req.pool is a valid database connection pool
         const pool = req.pool;
         const request = pool.request();
-
+        await pool.connect();
+        
         request.input('UserId', Mobile);
         request.input('OldPassword', oldpassword);
         request.input('NewPassword', newpassword);
@@ -299,3 +300,68 @@ async function sendOTPviaFirebase(mobileNumber, otp) {
         return false;
     }
 }
+
+
+export const MyProfile = async (req,res)=>{
+
+    try{
+
+        const {CustomerId }=req.body;
+
+        const pool= req.pool;
+        await pool.connect();
+
+        const request = pool.request();
+
+        request.input('CustomerId',CustomerId);
+        
+        request.input('Action',1);
+
+        const result = await request.execute('proc_BindCustomerDashBoard');
+
+        const returned = result.recordset;
+
+        res.status(201).json({message:'Data Inserted Successfully',data:returned});
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+export const MyProfiles = async (req,res)=>{
+
+     
+
+        try {
+            const { Name, Email, MobileNo } = req.body;
+            const { CustomerId } = req.params;
+    
+            console.log('Customer ID:', CustomerId); // Log the CustomerId
+            
+            // Validate input data
+    
+            // Update the customer profile
+            const pool= req.pool;
+            await pool.connect();
+    
+            const request = pool.request();
+    
+            request.input('CustomerId', CustomerId);
+            request.input('Name', Name);
+            request.input('MobileNo', MobileNo);
+            request.input('Email', Email);
+            request.input('Action', 1); // Assuming 1 is for update action
+    
+            const result = await request.execute('proc_BindCustomerDashBoard');
+            const returned = result.recordset;
+    
+            res.status(200).json({ message: `Profile Updated Successfully for Customer ID: ${CustomerId}`, data: returned });
+        } catch (error) {
+            console.error('SQL Server:', error)
+            res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+

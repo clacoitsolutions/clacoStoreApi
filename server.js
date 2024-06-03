@@ -9,7 +9,7 @@ import productCategoryRoute from "./routes/productcategoryRoute.js";
 import deliverAdress from  "./routes/DeliveryAddressRoute.js";
 import bodyparser from "body-parser";
 import GetCity from "./routes/CityStateRoute.js";
-import getorderlist from "./routes/OrderListRoute.js";
+import OrderListRoute from "./routes/OrderListRoute.js";
 import { dbConfig } from "./config/db.js"; // Import the database configuration
 import trackingorderRoute from "./routes/trackingorderRoute.js";
 import mywalletRoute from "./routes/mywalletRoute.js";
@@ -58,8 +58,9 @@ app.use("/",FillterRoute);
 app.use("/",trackingorderRoute);
 app.use("/", deliverAdress);
 app.use("/", GetCity);
-app.use("/", getorderlist);
  
+
+app.use("/",OrderListRoute);
 app.use("/", mywalletRoute);
 app.use("/",myprofileRoute);
 
@@ -67,7 +68,7 @@ app.get("/", (req, res) => {
     res.send("hello claco team");
 });
 
-const PORT = process.env.PORT || 9011;
+const PORT = process.env.PORT || 2024;
 app.listen(PORT, () => {
     console.log(`Server is working on ${PORT}`);
 });
