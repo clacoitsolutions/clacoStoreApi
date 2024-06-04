@@ -93,17 +93,17 @@ export const Wishlist =async (req,res)=>{
 
     try{
 
-        const {ProductId }= req.body;
+        const {CustomerId }= req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request= pool.request();
 
 
-        request.input("ProductId",ProductId);
+        request.input("CustomerId",CustomerId);
         
         
-        request.input("Action",61);
+        request.input("Action",81);
 
         const result = await request.execute('proc_BindCustomerDashBoard');
 
