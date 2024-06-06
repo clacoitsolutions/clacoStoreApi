@@ -5,7 +5,7 @@ import { getCategory, getcategorycategorywise } from "../controllers/categoryCon
 const router = express.Router();
 
 router.get("/getCategory",getCategory)
-router.get("/getcatwithid",getcategorycategorywise)
+router.post("/getcatwithid",getcategorycategorywise)
 
 
 export default router;
