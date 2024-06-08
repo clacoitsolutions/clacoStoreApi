@@ -11,7 +11,7 @@ router.get("/Pincode",Pincode)
  
 
 router.get("/Checkoutss",checkoutsAccount)
-router.get("/getProductDetails",getProductDetails)
+router.post("/getProductDetails",getProductDetails)
 router.get("/getProductDetailsprice",getProductDetailsprice)
 
 export default router;
