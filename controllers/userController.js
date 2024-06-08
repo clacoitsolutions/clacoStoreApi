@@ -103,26 +103,35 @@ export const forgetpasswordcontroller = async (req,res) => {
     }
 }
 
+export const addtoCartcontroller =async (req,res)=>{
 
- 
-export const addtoCartcontroller = async (req, res) => {
+    try{
 
-    try {
-
+        const {CustomerId }= req.body;
 
         const pool = req.pool;
         await pool.connect();
-        const request = pool.request();
+        const request= pool.request();
 
 
-        const result = await request.query('SELECT * FROM CartList');
-        res.json(result.recordset);
-    } catch (err) {
-        console.error('SQL error:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+        request.input("CustomerId",CustomerId);
+        
+        
+        request.input("Action",2);
+
+        const result = await request.execute('Proc_GetComboOffer');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Whishlist Successfully",data:returnedData})
     }
- 
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
 }
+
+ 
 
 export const ChangePassword = async (req, res) => {
     try {
