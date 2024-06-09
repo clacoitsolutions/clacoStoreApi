@@ -9,7 +9,7 @@ router.get("/cancelOrder",cancelorder);
 
 router.get("/ReturnOrder",ReturnOrder);
 
-router.get("/wishlist",Wishlist)
+router.post("/wishlist",Wishlist)
 
 router.delete("/DeleteWishlist",deletewishlist)
 
