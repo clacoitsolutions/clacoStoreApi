@@ -435,3 +435,61 @@ export const getOrderConfirmDetails = async (req,res)=>{
     }
 }
 
+
+export const ramujanam = async (req, res) => {
+    try {
+        const { FullNames, MobileNos, EmailAddresss, Messages } = req.body;
+
+        // Assuming req.pool is your SQL connection pool
+        const pool = req.pool;
+        
+        // Connect to the pool
+        await pool.connect();
+        
+        // Create a request object
+        const request = pool.request();
+
+        // Execute the insert command
+        request.input('FullName',FullNames),
+        request.input('MobileNo',MobileNos),
+        request.input('EmailAddress',EmailAddresss),
+        request.input('Message',Messages),
+        request.input('Action',1)
+
+        const result = await request.execute('Proc_ContactUs');
+        // If your stored procedure returns data, you can access it from the result object
+        const returnedData = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data
+        res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+
+    } catch (err) {
+        //         // Handle errors
+        console.error('SQL error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+export const ContactUsss = async (req,res)=>{
+
+    try{
+       
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+ 
+ 
+        const result = await request.query('select * from tbl_ContactUs ');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+ 

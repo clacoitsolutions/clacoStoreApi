@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController , logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles } from "../controllers/userController.js";
+import { createregistartionController ,ramujanam,ContactUsss, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles } from "../controllers/userController.js";
  
 
 
@@ -27,5 +27,10 @@ router.put("/myProfiles",MyProfiles)
 router.get("/Viewbilldetails",Viewbilldetails)
 
 router.get("/getOrderConfirm",getOrderConfirmDetails)
+
+router.post("/ContactUs",ramujanam)
+
+
+router.get("/ContactUsss",ContactUsss)
 
 export default router;
