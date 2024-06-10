@@ -4,6 +4,6 @@ import { Adreesscontroller } from "../controllers/DeliveryAddressController.js";
 const router = express.Router();
 
 // Route to get delivery addresses
-router.get("/getdeliveryaddress", Adreesscontroller);
+router.post("/getdeliveryaddress", Adreesscontroller);
 
 export default router;

@@ -10,7 +10,7 @@ router.get("/Pincode",Pincode)
 
  
 
-router.get("/Checkoutss",checkoutsAccount)
+router.post("/Checkoutss",checkoutsAccount)
 router.post("/getProductDetails",getProductDetails)
 router.get("/getProductDetailsprice",getProductDetailsprice)
 

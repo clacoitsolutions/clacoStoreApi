@@ -3,11 +3,11 @@ import { trackorder,cancelorder,ReturnOrder,Wishlist ,deletewishlist} from "../c
 
 const router = express.Router();
 
-router.get("/tracking ", trackorder);
+router.post("/tracking ", trackorder);
 
-router.get("/cancelOrder",cancelorder);
+router.post("/cancelOrder",cancelorder);
 
-router.get("/ReturnOrder",ReturnOrder);
+router.post("/ReturnOrder",ReturnOrder);
 
 router.post("/wishlist",Wishlist)
 

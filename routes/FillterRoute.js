@@ -9,8 +9,8 @@ router.get("/color",color)
 
 router.get("/getsize",size)
 
-router.get("/getLowToHigh",LowToHigh)
+router.post("/getLowToHigh",LowToHigh)
 
-router.get("/getHighToLow",HighToLow)
+router.post("/getHighToLow",HighToLow)
 
 export default router;
