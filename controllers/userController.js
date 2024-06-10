@@ -435,10 +435,13 @@ export const getOrderConfirmDetails = async (req,res)=>{
     }
 }
 
-
 export const ramujanam = async (req, res) => {
     try {
+        // Check if all required keys are present in the request body
         const { FullNames, MobileNos, EmailAddresss, Messages } = req.body;
+        if (!FullNames || !MobileNos || !EmailAddresss || !Messages) {
+            return res.status(400).json({ error: 'Bad Request: Missing required fields' });
+        }
 
         // Assuming req.pool is your SQL connection pool
         const pool = req.pool;
@@ -460,11 +463,17 @@ export const ramujanam = async (req, res) => {
         // If your stored procedure returns data, you can access it from the result object
         const returnedData = result.recordset; // Assuming the returned data is in the form of a recordset
 
-        // Send a success response along with the returned data
-        res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+        // Check if any rows were affected by the insert operation
+        if (result.rowsAffected && result.rowsAffected[0] > 0) {
+            // Send a success response along with the returned data
+            res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+        } else {
+            // Send a bad request response since no data was inserted
+            res.status(400).json({ error: 'Bad Request: No data inserted' });
+        }
 
     } catch (err) {
-        //         // Handle errors
+        // Handle errors
         console.error('SQL error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
