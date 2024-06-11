@@ -130,35 +130,30 @@ export const addtoCartcontroller =async (req,res)=>{
         res.status(500).json({error:'Internal Server error'});
     }
 }
-export const deleteaddtocart =async (req,res)=>{
-
-    try{
-
-        const {CustomerId,ProductID }= req.body;
+export const deleteaddtocart = async (req, res) => {
+    try {
+        const { CartListID } = req.body;
 
         const pool = req.pool;
         await pool.connect();
-        const request= pool.request();
+        const request = pool.request();
 
+         
+        request.input('Carlistid', CartListID); // Corrected parameter name
+        request.input('Action', 3);
 
-        request.input("CustomerId",CustomerId);
-        request.input("ProductID",ProductID);
-        
-        
-        request.input("Action",3);
+        const result = await request.execute('Proc_GetComboOffer'); // Use the correct stored procedure name
 
-        const result = await request.execute('Proc_GetComboOffer');
-
+        // Assuming the stored procedure returns some data after deletion
         const returnedData = result.recordset;
 
-        res.status(200).json({message:"mycart delete Successfully",data:returnedData})
-    }
-    catch(error){
-        console.error('sql server:',error)
-        res.status(500).json({error:'Internal Server error'});
+        res.status(200).json({ message: "Item deleted successfully", data: returnedData });
+    } catch (error) {
+        console.error('SQL Server Error:', error);
+        res.status(500).json({ error: 'Internal Server error' });
     }
 }
- 
+
 
 export const ChangePassword = async (req, res) => {
     try {
@@ -530,18 +525,17 @@ export const ContactUsss = async (req,res)=>{
 }
 
 
-export const quantity = async (req,res)=>{
-
-    try{
-
-        const {CartListID }=req.body;
+export const quantity = async (req, res) => {
+    try {
+        const { CartListID } = req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        request.input('CartListID',CartListID);
-        request.input('Action',4);
+        request.input('CartListID', CartListID);
+         
+        request.input('Action', 4);
 
         const result = await request.execute('Proc_GetComboOffer');
 
