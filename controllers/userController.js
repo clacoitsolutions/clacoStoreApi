@@ -134,7 +134,7 @@ export const deleteaddtocart =async (req,res)=>{
 
     try{
 
-        const {CustomerId }= req.body;
+        const {CustomerId,ProductId }= req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -142,6 +142,7 @@ export const deleteaddtocart =async (req,res)=>{
 
 
         request.input("CustomerId",CustomerId);
+        request.input("ProductId",ProductId);
         
         
         request.input("Action",3);
