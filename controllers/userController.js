@@ -527,13 +527,13 @@ export const ContactUsss = async (req,res)=>{
 
 export const quantity = async (req, res) => {
     try {
-        const { CartListID } = req.body;
+        const { Carlistid } = req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-        request.input('CartListID', CartListID);
+        request.input('Carlistid', Carlistid);
          
         request.input('Action', 4);
 
