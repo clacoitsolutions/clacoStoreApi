@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController ,ramujanam,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles } from "../controllers/userController.js";
+import { createregistartionController ,ramujanam,quantity,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles } from "../controllers/userController.js";
  
 
 
@@ -32,6 +32,8 @@ router.get("/Viewbilldetails",Viewbilldetails)
 router.get("/getOrderConfirm",getOrderConfirmDetails)
 
 router.post("/ContactUs",ramujanam)
+
+router.post("/quantityprice",quantity)
 
 
 router.get("/ContactUsss",ContactUsss)

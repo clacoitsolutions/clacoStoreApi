@@ -134,7 +134,7 @@ export const deleteaddtocart =async (req,res)=>{
 
     try{
 
-        const {CustomerId,CartListID }= req.body;
+        const {CustomerId,ProductID }= req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -142,7 +142,7 @@ export const deleteaddtocart =async (req,res)=>{
 
 
         request.input("CustomerId",CustomerId);
-        request.input("CartListID",CartListID);
+        request.input("ProductID",ProductID);
         
         
         request.input("Action",3);
@@ -526,6 +526,32 @@ export const ContactUsss = async (req,res)=>{
     catch(error){
         console.error("sql server",error);
         req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+export const quantity = async (req,res)=>{
+
+    try{
+
+        const {CartListID }=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('CartListID',CartListID);
+        request.input('Action',4);
+
+        const result = await request.execute('Proc_GetComboOffer');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"mycart delete Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
     }
 }
  
