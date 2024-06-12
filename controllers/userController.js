@@ -547,5 +547,17 @@ export const quantity = async (req, res) => {
         console.error('sql server:',error)
         res.status(500).json({error:'Internal Server error'});
     }
-}
- 
+}              
+
+
+
+
+
+
+
+
+
+
+
+
+

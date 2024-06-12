@@ -122,7 +122,7 @@ export const deletewishlist =async (req,res)=>{
 
     try{
 
-        const {ProductId }= req.body;
+        const {ProductId ,EntryBy}= req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -130,7 +130,7 @@ export const deletewishlist =async (req,res)=>{
 
 
         request.input("ProductId",ProductId);
-        
+        request.input("CustomerId",EntryBy);
         
         request.input("Action",721);
 
