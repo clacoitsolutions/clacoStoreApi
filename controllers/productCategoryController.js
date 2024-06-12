@@ -83,7 +83,7 @@ export const productCategory = async (req, res) => {
  
    export const checkoutsAccount = async (req, res) => {
     try {
-        const { OrderId } = req.body;
+        const { ProductCode } = req.body;
 
         // Assuming req.pool is the SQL Server connection pool
         const pool = req.pool;
@@ -92,12 +92,26 @@ export const productCategory = async (req, res) => {
 
         // Assuming Id is the ID you want to use to fetch data from the database
         const query = `
-            SELECT GrossAmount,DeliveryCharges,IsCoupenApplied,CoupenAmount,DiscountAmount,DeliveryAddressId,PaymentMode,PaymentStatus,NetPayable,StockiestId
-            FROM tbl_OnlineOrderDetail
-            WHERE OrderId = @OrderId
+           SELECT top 1
+    O.GrossAmount,
+    O.DeliveryCharges,
+    O.IsCoupenApplied,
+    O.CoupenAmount,
+    O.DiscountAmount,
+    O.DeliveryAddressId,
+    O.PaymentMode,
+    O.PaymentStatus,
+    O.NetPayable,
+    O.StockiestId,
+    P.ProductName,
+    P.ProductMainImageUrl	 
+FROM 
+    tbl_OnlineOrderDetail AS O
+  , 
+    tbl_EcommarceProductMaster AS P Where P.ProductCode =@ProductCode
         `;
       
-        request.input('OrderId', OrderId);
+        request.input('ProductCode', ProductCode);
 
         // Execute the query
         const result = await request.query(query);
@@ -111,7 +125,7 @@ export const productCategory = async (req, res) => {
     }
 };
 
-
+ 
 
 
 export const getProductDetailsprice = async (req,res)=>{
