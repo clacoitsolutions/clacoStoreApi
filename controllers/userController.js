@@ -284,6 +284,26 @@ export const Address = async (req,res)=>{
     }
 }
 
+export const DisplayAddress = async (req, res) => {
+    try {
+  
+     const pool = req.pool;
+      await pool.connect();
+      const request = pool.request();
+  
+      const result = await request.query("select * from tbl_DeliveryAddressDetails ");
+  
+      const states = result.recordset;
+  
+      res.status(200).json({ states });
+  
+    } 
+    
+    catch (error) {
+      console.error("SQL error", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 
 
 import { initializeApp } from "firebase/app";

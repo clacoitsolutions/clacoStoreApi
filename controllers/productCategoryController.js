@@ -230,4 +230,3 @@ export const getProductDetails = async (req,res)=>{
 //     getProductById,
 //     createProduct
 //   };
-  
