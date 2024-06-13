@@ -236,14 +236,18 @@ export const AddReview = async (req,res)=>{
 export const Address = async (req,res)=>{
 
     try{
-        const { CustomerId,Name,MobileNo,PinCode,Locality,Address,StateId,CityId,Landmark,AlternativeMobileno,OfferType,Latitude,Longitude,address2 }= req.body;
+        const {CustomerCode, Name,MobileNo,PinCode,Locality,Address,StateId,CityId,Landmark,AlternativeMobileno,OfferType,Latitude,Longitude,address2 }= req.body;
+
+        // if (!Name || !MobileNo || !PinCode || !Locality ||!Address ||!StateId || !CityId || !Landmark || !AlternativeMobileno ||!OfferType ||!Latitude || !Longitude || !address2) {
+        //     return res.status(400).json({ error: 'Bad Request: Missing required fields' });
+        // }
 
         const pool= req.pool;
         await pool.connect();
 
         const request = pool.request();
 
-        request.input('CustomerId',CustomerId);
+        request.input('CustomerCode',CustomerCode) 
         request.input('name',Name);
         request.input('mobileno',MobileNo);
         request.input('pincode',PinCode);
@@ -257,20 +261,29 @@ export const Address = async (req,res)=>{
         request.input('latitude',Latitude);
         request.input('longitude',Longitude);
         request.input('adress2',address2);
+        request.input('Action',5);
 
 
         const result = await request.execute('proc_InsertDeliveryAddress');
 
-        const returned = result.recordset;
+        const returnedData = result.recordset; // Assuming the returned data is in the form of a recordset
 
-        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
-    }
-    catch(error){
-        console.error('sql server:',error)
+        // Check if any rows were affected by the insert operation
+        if (result.rowsAffected && result.rowsAffected[0] > 0) {
+            // Send a success response along with the returned data
+            res.status(201).json({ message: 'Data inserted successfully', data: returnedData });
+        } else {
+            // Send a bad request response since no data was inserted
+            res.status(400).json({ error: 'Bad Request: No data inserted' });
+        }
+
+    } catch (err) {
+        // Handle errors
+        console.error('SQL error:', err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-
 }
+
 
 
 import { initializeApp } from "firebase/app";
@@ -548,16 +561,5 @@ export const quantity = async (req, res) => {
         res.status(500).json({error:'Internal Server error'});
     }
 }              
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+ 
