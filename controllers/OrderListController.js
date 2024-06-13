@@ -8,7 +8,7 @@ export const orderlistcontroller = async (req, res) => {
         const request = pool.request();
 
         // Set up input parameters for the stored procedure
-        request.input("Action", "2");
+        request.input("Action", "96");
         request.input("CustomerId", CustomerId);
         // request.input("OrderId", orderId);
 
