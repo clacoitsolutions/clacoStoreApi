@@ -132,13 +132,13 @@ export const deletewishlist =async (req,res)=>{
         request.input("ProductId",ProductId);
         request.input("CustomerId",EntryBy);
         
-        request.input("Action",721);
+        request.input("Action",722);
 
         const result = await request.execute('proc_BindCustomerDashBoard');
 
         const returnedData = result.recordset;
 
-        res.status(200).json({message:"Whishlist Successfully",data:returnedData})
+        res.status(200).json({message:"delete  Successfully",data:returnedData})
     }
     catch(error){
         console.error('sql server:',error)
