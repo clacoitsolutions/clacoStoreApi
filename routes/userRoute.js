@@ -18,7 +18,7 @@ router.post("/addToCart",addtoCartcontroller);
 
 router.post("/InsertAddress",Address)
 
-router.get("/displayAddress",DisplayAddress)
+router.post("/displayAddress",DisplayAddress)
 
 router.delete("/deletecart",deleteaddtocart); 
 

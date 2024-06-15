@@ -283,27 +283,35 @@ export const Address = async (req,res)=>{
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+ 
 
-export const DisplayAddress = async (req, res) => {
+  export const DisplayAddress = async (req, res) => {
     try {
-  
-     const pool = req.pool;
-      await pool.connect();
-      const request = pool.request();
-  
-      const result = await request.query("select * from tbl_DeliveryAddressDetails ");
-  
-      const states = result.recordset;
-  
-      res.status(200).json({ states });
-  
-    } 
-    
-    catch (error) {
-      console.error("SQL error", error);
-      res.status(500).json({ error: "Internal server error" });
+        const { CustomerCode } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+         
+        request.input('customercode', CustomerCode); // Corrected parameter name
+        request.input('Action', 6);
+
+        const result = await request.execute('proc_InsertDeliveryAddress'); // Use the correct stored procedure name
+
+        // Assuming the stored procedure returns some data after deletion
+        const returnedData = result.recordset;
+
+        res.status(200).json({ message: "Item deleted successfully", data: returnedData });
+    } catch (error) {
+        console.error('SQL Server Error:', error);
+        res.status(500).json({ error: 'Internal Server error' });
     }
-  };
+}
+
+
+
+
 
 
 import { initializeApp } from "firebase/app";
