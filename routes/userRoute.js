@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import { createregistartionController ,ramujanam,DisplayAddress,quantity,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles, Address } from "../controllers/userController.js";
+import {cartlist1,createregistartionController ,ramujanam,DisplayAddress,quantity,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles, Address } from "../controllers/userController.js";
  
 
 
@@ -41,5 +41,6 @@ router.post("/quantityprice",quantity)
 
 
 router.get("/ContactUsss",ContactUsss)
+router.post("/addtocart3",cartlist1)
 
 export default router;

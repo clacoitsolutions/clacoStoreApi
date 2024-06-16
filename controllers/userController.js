@@ -592,9 +592,9 @@ export const quantity = async (req, res) => {
 }              
  
 // New Code By Abhimanyu Singh
-export const cartlist = async (req, res) => {
+export const cartlist1 = async (req, res) => {
     try {
-        const { customerid,productid,quantity} = req.body;
+        const { customerid,productid,quantity,St} = req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -603,14 +603,14 @@ export const cartlist = async (req, res) => {
         request.input('customerid', customerid);
         request.input('productid', productid);
         request.input('quantity', quantity);
-         
+        request.input('St', St);
         request.input('Action', 1);
 
         const result = await request.execute('ProcInsertCartList');
 
         const returnedData = result.recordset;
 
-        res.status(200).json({message:"Insert cart Successfully",data:returnedData})
+        res.status(200).json({message:"My  cart Insert Successfully",data:returnedData})
     }
     catch(error){
         console.error('sql server:',error)

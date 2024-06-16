@@ -1,3 +1,33 @@
+// export const orderlistcontroller = async (req, res) => {
+//     try {
+//         // Validate input parameters
+//         const { CustomerId } = req.body;
+
+//         const pool = req.pool;
+//         await pool.connect();
+//         const request = pool.request();
+
+//         // Set up input parameters for the stored procedure
+//         request.input("Action", "96");
+//         request.input("CustomerId", CustomerId);
+//         // request.input("OrderId", orderId);
+
+//         // Execute the stored procedure
+//         const result = await request.execute("proc_BindCustomerDashBoard");
+
+//         // Retrieve the order items from the result
+//         const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+//         // Send a success response along with the returned data and a success message
+//         res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+
+//     } catch (error) {
+//         // Handle errors
+//         console.error("SQL error", error);
+//         res.status(500).json({ error: "Internal server error" });
+//     }
+// };
+
 export const orderlistcontroller = async (req, res) => {
     try {
         // Validate input parameters
@@ -8,18 +38,30 @@ export const orderlistcontroller = async (req, res) => {
         const request = pool.request();
 
         // Set up input parameters for the stored procedure
-        request.input("Action", "96");
+        request.input("Action", "2");
         request.input("CustomerId", CustomerId);
         // request.input("OrderId", orderId);
 
         // Execute the stored procedure
         const result = await request.execute("proc_BindCustomerDashBoard");
 
-        // Retrieve the order items from the result
-        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+        // Retrieve the main order items from the result
+       // const orderItems = result.recordsets[0]; // Assuming the first SELECT result
 
-        // Send a success response along with the returned data and a success message
-        res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+        // Retrieve additional SELECT results
+        const orderItemDetails1 = result.recordsets[1]; // First additional SELECT
+        const orderItemDetails2 = result.recordsets[2]; // Second additional SELECT
+
+        // Combine all data into a single response object
+        const responseData = {
+            message: 'Order items retrieved successfully',
+           // orderItems: orderItems,
+            orderItemDetails1: orderItemDetails1, // Add if needed
+            orderItemDetails2: orderItemDetails2  // Add if needed
+        };
+
+        // Send a success response along with the returned data
+        res.status(200).json(responseData);
 
     } catch (error) {
         // Handle errors
@@ -27,6 +69,7 @@ export const orderlistcontroller = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 
 export const deletecart = async (req,res)=>{
