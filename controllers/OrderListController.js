@@ -86,6 +86,38 @@ export const clickorderdetails = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+//  New Code By Abhimanyu Singh
+
+export const CancelOrder = async (req, res) => {
+    try {
+        // Validate input parameters
+        const { OrderId,CancelReason } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        // Set up input parameters for the stored procedure
+        request.input("Action", "1");
+        request.input("orderId", OrderId);
+        request.input("Cancelreason", CancelReason);
+
+        // Execute the stored procedure
+        const result = await request.execute("proc_CancelOrder");
+
+        // Retrieve the order items from the result
+        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data and a success message
+        res.status(200).json({ message: 'Order items Cancelled successfully', orderItems: orderItems });
+
+    } catch (error) {
+        // Handle errors
+        console.error("SQL error", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+// End Code By Abhimanyu Singh
 
 
 

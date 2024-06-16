@@ -1,5 +1,5 @@
 import express from "express";
-import { orderlistcontroller,deletecart ,clickorderdetails} from "../controllers/OrderListController.js";
+import { orderlistcontroller,deletecart ,clickorderdetails,CancelOrder} from "../controllers/OrderListController.js";
 
 const router = express.Router();
 
@@ -8,6 +8,8 @@ router.post("/getorderitems", orderlistcontroller); // Assuming you want to use 
 
 router.delete("/deletecart",deletecart);
 
-router.post("/clickorderdetails",clickorderdetails)
+router.post("/clickorderdetails",clickorderdetails),
+
+router.post("/Cancelorder",CancelOrder)
 
 export default router;
