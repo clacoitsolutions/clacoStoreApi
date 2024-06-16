@@ -33,7 +33,7 @@ router.put("/myProfiles",MyProfiles)
 
 router.get("/Viewbilldetails",Viewbilldetails)
 
-router.get("/getOrderConfirm",getOrderConfirmDetails)
+router.post("/getOrderConfirm",getOrderConfirmDetails)
 
 router.post("/ContactUs",ramujanam)
 
