@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/getCategory",getCategory)
 router.post("/getcatwithid",getcategorycategorywise),
-//router.get("/Bindmainmenu1",Bindmainmenu)
+router.get("/Bindmainmenu1",Bindmainmenu)
 
 
 export default router;
