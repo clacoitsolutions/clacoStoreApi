@@ -145,6 +145,7 @@ export const getProductDetailsprice = async (req,res)=>{
         request.input('search',search);
         
         request.input('Action',821);
+        
 
         const result = await request.execute('proc_GetSingleProductView');
 

@@ -617,4 +617,5 @@ export const cartlist1 = async (req, res) => {
         res.status(500).json({error:'Internal Server error'});
     }
 }    
+
  
