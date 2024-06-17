@@ -131,20 +131,20 @@ FROM
 export const getProductDetailsprice = async (req,res)=>{
 
     try{
-        const{CatId,search,Min,Max}=req.body;
+        const{Min,Max}=req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
 
-        request.input('CatId',CatId);
+      //  request.input('CatId',CatId);
        
         request.input('Max',Max);
         request.input('Min',Min);
-        request.input('search',search);
+        // request.input('search',search);
         
-        request.input('Action',821);
+        request.input('Action',822);
         
 
         const result = await request.execute('proc_GetSingleProductView');
