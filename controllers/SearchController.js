@@ -38,3 +38,35 @@ export const SearchCategory = async (req,res)=> {
         res.status(500).json({message:'Internal Servel Error'});
     }
 }
+
+export const SearchProduct = async (req,res)=>{
+
+    try{
+        const{SearchText}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+        request.input('CatId',0);
+        request.input('SearchText',SearchText);
+ 
+        
+        request.input('Action',10);
+        
+
+        const result = await request.execute('proc_GetSingleProductView');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+

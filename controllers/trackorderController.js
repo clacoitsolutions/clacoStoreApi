@@ -148,5 +148,35 @@ export const deletewishlist =async (req,res)=>{
     }
 }
 
+export const AddWishlist =async (req,res)=>{
+
+    try{
+
+        const {VariationId,ProductId }= req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request= pool.request();
+
+
+        request.input("VariationId",VariationId);
+        request.input("ProductId",ProductId);
+        
+        
+        request.input("Action",722);
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:" Add Whishlist Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}
+
+
 
 
