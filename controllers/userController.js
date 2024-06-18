@@ -626,6 +626,31 @@ export const cartlist1 = async (req, res) => {
     }
 }    
 
+export const updatecartsizeagync = async (req, res) => {
+    try {
+        const { customerid,productid,quantity} = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('customerid', customerid);
+        request.input('productid', productid);
+        request.input('quantity', quantity);
+        request.input('Action', 5);
+
+        const result = await request.execute('ProcInsertCartList');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"My  cart Insert Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
+
 export const getSize = async (req, res) => {
     try {
         const {sizecode} = req.body;
