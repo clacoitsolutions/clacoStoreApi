@@ -318,8 +318,17 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword }from "firebase/auth";
 
 // Initialize Firebase app
+// const firebaseConfig = {
+//     apiKey: "AIzaSyCz22UHSeOXoKQJVmRUQACJZEoh_guEP-w",
+//     authDomain: "clacostore-7303d.firebaseapp.com",
+//     projectId: "clacostore-7303d",
+//     storageBucket: "clacostore-7303d.appspot.com",
+//     messagingSenderId: "811975379858",
+//     appId: "1:811975379858:web:eecd652c1f6c7a23c3cf4b",
+//     measurementId: "G-JBPM0JKMD9"
+//   };
 const firebaseConfig = {
-    apiKey: "AIzaSyCz22UHSeOXoKQJVmRUQACJZEoh_guEP-w",
+    apiKey: "AIzaSyCz22UHSeOXoKQJVmRUQACJZEoh_guE-w",
     authDomain: "clacostore-7303d.firebaseapp.com",
     projectId: "clacostore-7303d",
     storageBucket: "clacostore-7303d.appspot.com",
@@ -327,7 +336,6 @@ const firebaseConfig = {
     appId: "1:811975379858:web:eecd652c1f6c7a23c3cf4b",
     measurementId: "G-JBPM0JKMD9"
   };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
