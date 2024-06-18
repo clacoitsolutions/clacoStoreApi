@@ -618,4 +618,104 @@ export const cartlist1 = async (req, res) => {
     }
 }    
 
+export const getSize = async (req, res) => {
+    try {
+        const {sizecode} = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('sizecode', sizecode);
+  
+        request.input('Action',744);
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"This is Your Data Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
+
+export const getrating = async (req, res) => {
+    try {
+        const {rating} = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('rating', rating);
+  
+        request.input('Action',55);
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"This is Your Rating Details",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
+
+
+export const offermaster = async (req, res) => {
+    try {
+        const {DiscountPercentage} = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('DiscountPercentage', DiscountPercentage);
+  
+        request.input('Action',1);
+
+        const result = await request.execute('ShowProductsByDiscountPercentage');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"This is Your Products in offer",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
+ 
+
+export const customermaster = async (req, res) => {
+    try {
+        const {Name,emailid,mobile,Password} = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('Name', Name);
+        request.input('emailid',emailid);
+        request.input('mobileno',mobile);
+        request.input('Password',Password);
+  
+        request.input('Action',1);
+
+        const result = await request.execute('Proc_InserCustomerAccountWeb');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"This is Your Products in offer",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
  

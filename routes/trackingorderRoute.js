@@ -1,5 +1,5 @@
 import express from "express"; 
-import {AddWishlist,trackorder,cancelorder,ReturnOrder,Wishlist ,deletewishlist} from "../controllers/trackorderController.js";
+import {Bindmainmenuu,AddWishlist,trackorder,cancelorder,ReturnOrder,Wishlist ,deletewishlist} from "../controllers/trackorderController.js";
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.post("/wishlist",Wishlist)
 
 router.delete("/DeleteWishlist",deletewishlist)
 router.post("/AddWishlist1",AddWishlist)
+router.get("/Bindmain",Bindmainmenuu)
 
 export default router;
