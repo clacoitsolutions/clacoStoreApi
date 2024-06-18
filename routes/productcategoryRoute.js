@@ -1,7 +1,7 @@
 import express from "express"; 
-import { productCategory ,cancelproduct,Pincode, checkoutsAccount,getProductDetailsprice,getProductDetails} from "../controllers/productCategoryController.js";
+import { productCategory ,cancelproduct,Pincode, checkoutsAccount,,getProductDetails} from "../controllers/productCategoryController.js";
 
-
+//getProductDetailsprice
 const router = express.Router();
 
 router.get("/productCategory",productCategory)
@@ -12,6 +12,6 @@ router.get("/Pincode",Pincode)
 
 router.post("/Checkoutss",checkoutsAccount)
 router.post("/getProductDetails",getProductDetails)
-router.post("/getProductDetailsprice",getProductDetailsprice)
+//router.post("/getProductDetailsprice",getProductDetailsprice)
 
 export default router;

@@ -76,7 +76,7 @@ export const productCategory = async (req, res) => {
     }
     catch(error){
         console.error('sql server',error);
-        res.status(502).json({error:'i hate u'});
+        res.status(500).json({error:'i hate u'});
     }
    }
 
@@ -128,38 +128,38 @@ FROM
  
 
 
-export const getProductDetailsprice = async (req,res)=>{
+// export const getProductDetailsprice = async (req,res)=>{
 
-    try{
-        const{Min,Max}=req.body;
+//     try{
+//         const{Min,Max}=req.body;
 
-        const pool = req.pool;
-        await pool.connect();
-        const request = pool.request();
+//         const pool = req.pool;
+//         await pool.connect();
+//         const request = pool.request();
 
 
-      //  request.input('CatId',CatId);
+//       //  request.input('CatId',CatId);
        
-        request.input('Max',Max);
-        request.input('Min',Min);
-        // request.input('search',search);
+//         request.input('Max',Max);
+//         request.input('Min',Min);
+//         // request.input('search',search);
         
-        request.input('Action',822);
+//         request.input('Action',822);
         
 
-        const result = await request.execute('proc_GetSingleProductView');
+//         const result = await request.execute('proc_GetSingleProductView');
 
-        const returnedData = result.recordset;
+//         const returnedData = result.recordset;
 
-        res.status(200).json({message:"Your Order List",data:returnedData});
+//         res.status(200).json({message:"Your Order List",data:returnedData});
 
 
-    }
-    catch(error){
-        console.error("sql server",error);
-        req.status(500).json({error:"Internal Srver Error"});
-    }
-}
+//     }
+//     catch(error){
+//         console.error("sql server",error);
+//         req.status(500).json({error:"Internal Srver Error"});
+//     }
+// }
 
 
 
