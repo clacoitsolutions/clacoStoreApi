@@ -1,5 +1,5 @@
 import express from "express";
-import { orderlistcontroller,deletecart ,clickorderdetails,CancelOrder} from "../controllers/OrderListController.js";
+import { orderlistcontroller,deletecart ,clickorderdetails,CancelOrder,postOnlineOrder} from "../controllers/OrderListController.js";
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ router.delete("/deletecart",deletecart);
 
 router.post("/clickorderdetails",clickorderdetails),
 
-router.post("/Cancelorder",CancelOrder)
+router.post("/Cancelorder",CancelOrder);
+router.post("/postOnlineOrder1",postOnlineOrder);
+//router.post("/InsertOnlineOrder1",InsertOnlineOrder);
 
 export default router;

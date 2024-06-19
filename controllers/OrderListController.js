@@ -164,3 +164,49 @@ export const CancelOrder = async (req, res) => {
 
 
 
+// Here this API is created for online order 
+
+export const postOnlineOrder = async (req, res) => {
+    try {
+        // Validate input parameters
+        const { OrderId,customerid,grossamount,deliverycharges,iscoupenapplied,coupenamount,deliveryaddressid,paymentmode,paymentstatus,NetPayable,GSTAmount } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        // Set up input parameters for the stored procedure
+        request.input("Action", 1);
+       // request.input("orderId", OrderId);
+        request.input("customerid", customerid);
+        request.input("grossamount", grossamount);
+        request.input("deliverycharges", deliverycharges);
+        request.input("iscoupenapplied", iscoupenapplied);
+        request.input("coupenamount", coupenamount);
+      //  request.input("discountamount", discountamount);
+        request.input("deliveryaddressid", deliveryaddressid);
+        request.input("paymentmode", paymentmode);
+        request.input("paymentstatus", paymentstatus);
+        request.input("NetPayable", NetPayable);
+        request.input("GSTAmount", GSTAmount);
+  
+
+
+        // Execute the stored procedure
+        const result = await request.execute("Proc_InsertOnlineOrderApi");
+
+        // Retrieve the order items from the result
+        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data and a success message
+        res.status(200).json({ message: 'Order items Inserted successfully', orderItems: orderItems });
+
+    } catch (error) {
+        // Handle errors
+        console.error("SQL error", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+

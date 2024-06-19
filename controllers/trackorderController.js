@@ -177,6 +177,9 @@ export const AddWishlist =async (req,res)=>{
     }
 }
 
+
+
+
 // new code for the bind main menu
 
 export const Bindmainmenuu =async (req,res)=>{
@@ -207,6 +210,10 @@ export const Bindmainmenuu =async (req,res)=>{
         res.status(500).json({error:'Internal Server error'});
     }
 }
+
+
+
+
 
 
 

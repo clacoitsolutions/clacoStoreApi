@@ -96,10 +96,10 @@ export const productCategory = async (req, res) => {
     O.GrossAmount,
     O.DeliveryCharges,
     O.IsCoupenApplied,
-    O.CoupenAmount,
-    O.DiscountAmount,
+    O.CoupenAtAmount,
     O.DeliveryAddressId,
-    O.PaymentMode,
+    O.PaymentMmount,
+    O.Discounode,
     O.PaymentStatus,
     O.NetPayable,
     O.StockiestId,
@@ -124,6 +124,34 @@ FROM
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+export const getTotalNetAmmount = async (req, res) => {
+    try {
+      const { customerCode } = req.body;
+  
+      const pool = req.pool;
+      await pool.connect();
+      const request = pool.request();
+  
+      // Assuming 'proc_InsertDeliveryAddress' is your stored procedure
+      request.input("Action", 26);
+      request.input("customercode", customerCode);
+  
+      const result = await request.execute("proc_getCartDetails");
+  
+      const addresses = result.recordset;
+  
+      res.status(200).json({ addresses });
+    } catch (error) {
+      console.error("SQL error", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+
+
+
+
 
  
 

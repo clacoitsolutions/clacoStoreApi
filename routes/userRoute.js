@@ -47,4 +47,6 @@ router.post("/getrating",getrating)
 router.post("/offermaster",offermaster)
 router.post("/customermaster",customermaster)
 router.post("/updatecartsize1",updatecartsizeagync)
+
+
 export default router;
