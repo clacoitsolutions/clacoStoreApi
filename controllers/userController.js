@@ -626,6 +626,7 @@ export const cartlist1 = async (req, res) => {
     }
 }    
 
+
 export const updatecartsizeagync = async (req, res) => {
     try {
         const { customerid,productid,quantity} = req.body;
