@@ -199,7 +199,7 @@ export const Bindmainmenuu =async (req,res)=>{
         
         request.input("Action",1);
 
-        const result = await request.execute('Proc_BindMenu');
+        const result = await request.execute('[Proc_BindMenu]');
 
         const returnedData = result.recordset;
 

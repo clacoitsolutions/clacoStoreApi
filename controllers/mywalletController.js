@@ -62,7 +62,7 @@ export const mywallet = async (req,res) =>
                 request.input('CustomerID',CustomerID);
               
                 request.input('Action',9);
-                const result = await request.execute('Proc_InsertUpdateDeleteCoin');
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
         
                 const returnedData = result.recordset;
         
@@ -89,7 +89,7 @@ export const mywallet = async (req,res) =>
                 request.input('SelectedValue',SelectedValue);
               
                 request.input('Action',8);
-                const result = await request.execute('Proc_InsertUpdateDeleteCoin');
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
         
                 const returnedData = result.recordset;
         
@@ -112,7 +112,7 @@ export const mywallet = async (req,res) =>
         
              
                 request.input('Action',11);
-                const result = await request.execute('Proc_InsertUpdateDeleteCoin');
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
         
                 const returnedData = result.recordset;
         
@@ -136,7 +136,7 @@ export const mywallet = async (req,res) =>
         
              
                 request.input('Action',3);
-                const result = await request.execute('Proc_InsertUpdateDeleteCoin');
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
         
                 const returnedData = result.recordset;
         
