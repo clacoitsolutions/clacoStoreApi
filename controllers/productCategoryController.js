@@ -192,33 +192,84 @@ export const getProductDetailsprice = async (req,res)=>{
 
 
 
-export const getProductDetails = async (req,res)=>{
+// export const getProductDetails = async (req,res)=>{
 
-    try{
-        const{productId,CatId}=req.body;
+//     try{
+//         const{productId,CatId}=req.body;
+
+//         const pool = req.pool;
+//         await pool.connect();
+//         const request = pool.request();
+
+
+//         request.input('CatId',CatId);
+//         request.input('productId',productId);
+//         request.input('Action',1);
+
+//         const result = await request.execute('Proc_GetProductDetail_Updated');
+
+//         const returnedData = result.recordset;
+
+//         res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+//     }
+//     catch(error){
+//         console.error("sql server",error);
+//         req.status(500).json({error:"Internal Srver Error"});
+//     }
+// }
+
+export const getProductDetails = async (req, res) => {
+    try {
+        const { productId, CatId } = req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
-
-        request.input('CatId',CatId);
-        request.input('productId',productId);
-        request.input('Action',1);
+        request.input('CatId', CatId);
+        request.input('productId', productId);
+        request.input('Action', 101);
 
         const result = await request.execute('Proc_GetProductDetail_Updated');
 
-        const returnedData = result.recordset;
+        // Assuming 'ProductDescription' is a key in the returned data
+        let returnedData = result.recordset;
 
-        res.status(200).json({message:"Your Order List",data:returnedData});
+        // Function to convert HTML to plain text
+        const htmlToPlainText = (html) => {
+            // Remove HTML tags and replace HTML entities
+            let plainText = html.replace(/<[^>]+>/g, ''); // Remove HTML tags
+            plainText = plainText.replace(/&nbsp;/g, ' '); // Replace &nbsp; with space
+            plainText = plainText.replace(/&amp;/g, '&'); // Replace &amp; with &
+            plainText = plainText.replace(/&lt;/g, '<'); // Replace &lt; with <
+            plainText = plainText.replace(/&gt;/g, '>'); // Replace &gt; with >
+            plainText = plainText.replace(/&quot;/g, '"'); // Replace &quot; with "
+            plainText = plainText.replace(/&#39;/g, "'"); // Replace &#39; with '
 
+            // Normalize multiple spaces and trim
+            plainText = plainText.replace(/\s+/g, ' ').trim();
 
+            return plainText;
+        };
+
+        // Filter out HTML tags and convert HTML entities in 'ProductDescription'
+        if (returnedData && returnedData.length > 0) {
+            returnedData = returnedData.map(item => ({
+                ...item,
+                ProductDescription: htmlToPlainText(item.ProductDescription)
+            }));
+        }
+
+        res.status(200).json({ message: "Your Order List", data: returnedData });
+    } catch (error) {
+        console.error("sql server", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-    catch(error){
-        console.error("sql server",error);
-        req.status(500).json({error:"Internal Srver Error"});
-    }
-}
+};
+
+
 
 
   

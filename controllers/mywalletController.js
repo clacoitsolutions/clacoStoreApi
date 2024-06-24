@@ -148,6 +148,57 @@ export const mywallet = async (req,res) =>
             }
         } 
          
+        
+        // This Api is used  for the Retrieve  all coin sender
+
+        export const getSenderCoin = async (req, res) => {
+            try {
+                const { CustomerID }=req.body;
+        
+                const pool = req.pool;
+                await pool.connect();
+                const request = pool.request();
+        
+                request.input('CustomerID',CustomerID);
+                request.input('Action',9);
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
+        
+                const returnedData = result.recordset;
+        
+                res.status(200).json({message:"Your Total Coin ",data:returnedData})
+            }
+            catch(error){
+                console.error('sql server:',error)
+                res.status(500).json({error:'Internal Server error'});
+            }
+        } 
+
+
+
+        // This api is  used for bind all customer details
+        export const getReciverCustomerDetails = async (req, res) => {
+            try {
+                const { CustomerID }=req.body;
+        
+                const pool = req.pool;
+                await pool.connect();
+                const request = pool.request();
+        
+                request.input('CustomerID',CustomerID);
+                request.input('Action',6);
+                const result = await request.execute('Proc_InsertUpdateDeleteCoinAPI');
+        
+                const returnedData = result.recordset;
+        
+                res.status(200).json({message:"Your Total Coin ",data:returnedData})
+            }
+            catch(error){
+                console.error('sql server:',error)
+                res.status(500).json({error:'Internal Server error'});
+            }
+        } 
+         
+         
 
 
 
