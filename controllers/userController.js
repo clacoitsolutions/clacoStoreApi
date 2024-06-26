@@ -602,7 +602,7 @@ export const quantity = async (req, res) => {
 // New Code By Abhimanyu Singh
 export const cartlist1 = async (req, res) => {
     try {
-        const { customerid,productid,quantity,St} = req.body;
+        const { customerid,productid,quantity,St,sizename,colorname} = req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -612,6 +612,8 @@ export const cartlist1 = async (req, res) => {
         request.input('productid', productid);
         request.input('quantity', quantity);
         request.input('St', St);
+        request.input('sizename', sizename);
+        request.input('Colorname', colorname);
         request.input('Action', 1);
 
         const result = await request.execute('ProcInsertCartList');

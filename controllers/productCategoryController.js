@@ -372,6 +372,41 @@ export const getAllImageProductWise = async (req,res)=>{
 }
 
 
+export const getProductDetailColor = async (req,res)=>{
+
+    try{
+        const{productId}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('productId', productId);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',640);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Color List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+
 
 
 
