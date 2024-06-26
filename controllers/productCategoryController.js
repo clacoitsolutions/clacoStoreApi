@@ -230,7 +230,7 @@ export const getProductDetails = async (req, res) => {
 
         request.input('CatId', CatId);
         request.input('productId', productId);
-        request.input('Action', 101);
+        request.input('Action', 1);
 
         const result = await request.execute('Proc_GetProductDetail_Updated');
 
@@ -268,6 +268,75 @@ export const getProductDetails = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
+export const getProductDetailSize = async (req,res)=>{
+
+    try{
+        const{productId}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('productId', productId);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',61);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+export const getProductDetailColorWise = async (req,res)=>{
+
+    try{
+        const{Sizecode}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('Sizecode', Sizecode);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',642);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
 
 
 
