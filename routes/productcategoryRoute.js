@@ -1,5 +1,5 @@
 import express from "express"; 
-import {getProductDetailsprice,getTotalNetAmmount,productCategory ,cancelproduct,Pincode, checkoutsAccount,getProductDetails,getProductDetailSize,getProductDetailColorWise} from "../controllers/productCategoryController.js";
+import {getAllImageProductWise,getProductDetailsprice,getTotalNetAmmount,productCategory ,cancelproduct,Pincode, checkoutsAccount,getProductDetails,getProductDetailSize,getProductDetailColorWise} from "../controllers/productCategoryController.js";
 
 //getProductDetailsprice
 const router = express.Router();
@@ -16,5 +16,6 @@ router.post("/getTotalNetAmmount",getTotalNetAmmount)
 router.post("/getProductDetailsprice",getProductDetailsprice)
 router.post("/getProductDetailSize",getProductDetailSize)
 router.post("/getProductDetailColorWise",getProductDetailColorWise)
+router.post("/getAllImageProductWise",getAllImageProductWise)
 
 export default router;
