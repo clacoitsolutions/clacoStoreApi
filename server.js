@@ -70,7 +70,7 @@ app.get("/", (req, res) => {
     res.send("hello claco team");
 });
 
-const PORT = process.env.PORT || 2026;
+const PORT = process.env.PORT || 3023;
 app.listen(PORT, () => {
     console.log(`Server is working on ${PORT}`);
 });

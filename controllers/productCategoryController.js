@@ -76,7 +76,7 @@ export const productCategory = async (req, res) => {
     }
     catch(error){
         console.error('sql server',error);
-        res.status(502).json({error:'i hate u'});
+        res.status(500).json({error:'i hate u'});
     }
    }
 
@@ -96,10 +96,10 @@ export const productCategory = async (req, res) => {
     O.GrossAmount,
     O.DeliveryCharges,
     O.IsCoupenApplied,
-    O.CoupenAmount,
-    O.DiscountAmount,
+    O.CoupenAtAmount,
     O.DeliveryAddressId,
-    O.PaymentMode,
+    O.PaymentMmount,
+    O.Discounode,
     O.PaymentStatus,
     O.NetPayable,
     O.StockiestId,
@@ -125,26 +125,55 @@ FROM
     }
 };
 
+
+export const getTotalNetAmmount = async (req, res) => {
+    try {
+      const { customerCode } = req.body;
+  
+      const pool = req.pool;
+      await pool.connect();
+      const request = pool.request();
+  
+      // Assuming 'proc_InsertDeliveryAddress' is your stored procedure
+      request.input("Action", 26);
+      request.input("customercode", customerCode);
+  
+      const result = await request.execute("proc_getCartDetails");
+  
+      const addresses = result.recordset;
+  
+      res.status(200).json({ addresses });
+    } catch (error) {
+      console.error("SQL error", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+
+
+
+
+
  
 
 
 export const getProductDetailsprice = async (req,res)=>{
 
     try{
-        const{CatId,search,Min,Max}=req.body;
+        const{Min,Max}=req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
 
-        request.input('CatId',CatId);
+      //  request.input('CatId',CatId);
        
         request.input('Max',Max);
         request.input('Min',Min);
-        request.input('search',search);
+        // request.input('search',search);
         
-        request.input('Action',821);
+        request.input('Action',822);
         
 
         const result = await request.execute('proc_GetSingleProductView');
@@ -163,19 +192,102 @@ export const getProductDetailsprice = async (req,res)=>{
 
 
 
-export const getProductDetails = async (req,res)=>{
+// export const getProductDetails = async (req,res)=>{
+
+//     try{
+//         const{productId,CatId}=req.body;
+
+//         const pool = req.pool;
+//         await pool.connect();
+//         const request = pool.request();
+
+
+//         request.input('CatId',CatId);
+//         request.input('productId',productId);
+//         request.input('Action',1);
+
+//         const result = await request.execute('Proc_GetProductDetail_Updated');
+
+//         const returnedData = result.recordset;
+
+//         res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+//     }
+//     catch(error){
+//         console.error("sql server",error);
+//         req.status(500).json({error:"Internal Srver Error"});
+//     }
+// }
+
+export const getProductDetails = async (req, res) => {
+    try {
+        const { productId, CatId } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('CatId', CatId);
+        request.input('productId', productId);
+        request.input('Action', 1);
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        // Assuming 'ProductDescription' is a key in the returned data
+        let returnedData = result.recordset;
+
+        // Function to convert HTML to plain text
+        const htmlToPlainText = (html) => {
+            // Remove HTML tags and replace HTML entities
+            let plainText = html.replace(/<[^>]+>/g, ''); // Remove HTML tags
+            plainText = plainText.replace(/&nbsp;/g, ' '); // Replace &nbsp; with space
+            plainText = plainText.replace(/&amp;/g, '&'); // Replace &amp; with &
+            plainText = plainText.replace(/&lt;/g, '<'); // Replace &lt; with <
+            plainText = plainText.replace(/&gt;/g, '>'); // Replace &gt; with >
+            plainText = plainText.replace(/&quot;/g, '"'); // Replace &quot; with "
+            plainText = plainText.replace(/&#39;/g, "'"); // Replace &#39; with '
+
+            // Normalize multiple spaces and trim
+            plainText = plainText.replace(/\s+/g, ' ').trim();
+
+            return plainText;
+        };
+
+        // Filter out HTML tags and convert HTML entities in 'ProductDescription'
+        if (returnedData && returnedData.length > 0) {
+            returnedData = returnedData.map(item => ({
+                ...item,
+                ProductDescription: htmlToPlainText(item.ProductDescription)
+            }));
+        }
+
+        res.status(200).json({ message: "Your Order List", data: returnedData });
+    } catch (error) {
+        console.error("sql server", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+export const getProductDetailSize = async (req,res)=>{
 
     try{
-        const{productId,CatId}=req.body;
+        const{productId}=req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
 
-        request.input('CatId',CatId);
-        request.input('productId',productId);
-        request.input('Action',1);
+      //  request.input('CatId',CatId);
+       
+      request.input('productId', productId);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',61);
+        
 
         const result = await request.execute('Proc_GetProductDetail_Updated');
 
@@ -190,6 +302,116 @@ export const getProductDetails = async (req,res)=>{
         req.status(500).json({error:"Internal Srver Error"});
     }
 }
+
+
+export const getProductDetailColorWise = async (req,res)=>{
+
+    try{
+        const{Sizecode}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('Sizecode', Sizecode);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',642);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Order List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+export const getAllImageProductWise = async (req,res)=>{
+
+    try{
+        const{ProductId}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('ProductId', ProductId);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',2);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your All Product List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+export const getProductDetailColor = async (req,res)=>{
+
+    try{
+        const{productId}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+
+      //  request.input('CatId',CatId);
+       
+      request.input('productId', productId);
+      //  request.input('Min',Min);
+        // request.input('search',search);
+        
+        request.input('Action',640);
+        
+
+        const result = await request.execute('Proc_GetProductDetail_Updated');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Your Color List",data:returnedData});
+
+
+    }
+    catch(error){
+        console.error("sql server",error);
+        req.status(500).json({error:"Internal Srver Error"});
+    }
+}
+
+
+
+
+
+
+
+
 
 
   
