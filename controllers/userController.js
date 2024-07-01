@@ -314,8 +314,10 @@ export const Address = async (req,res)=>{
 
 
 
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword }from "firebase/auth";
+
+
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // Initialize Firebase app
 const firebaseConfig = {
