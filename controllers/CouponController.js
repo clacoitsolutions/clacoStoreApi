@@ -13,7 +13,7 @@ export const getAssignCoupan = async (req, res) => {
         request.input('CustomerId', sql.VarChar(50), CustomerId);
 
         // Execute the stored procedure
-        const result = await request.execute('Proc_InsertCoupanMaster');
+        const result = await request.execute('[a18dfc62d].[Proc_InsertCoupanMaster]');
 
         res.status(201).json({ message: 'Coupon inserted successfully', data: result.recordset });
     } catch (err) {
@@ -35,11 +35,11 @@ export const getCouponByCode = async (req, res) => {
         const request = pool.request();
 
         // Input parameters for the stored procedure
-        request.input('Action', sql.Int, 2);
+        request.input('Action', sql.Int, 5);
         request.input('CoupanCode', sql.VarChar(50), CoupanCode);
 
         // Execute the stored procedure
-        const result = await request.execute('InsertCoupanOffer');
+        const result = await request.execute('[a18dfc62d].[Proc_InsertCoupanMaster]');
 
         if (result.recordset.length > 0) {
             res.status(200).json({ message: 'Coupon retrieved successfully', data: result.recordset[0] });
@@ -64,11 +64,11 @@ export const redeemCoupon = async (req, res) => {
         const request = pool.request();
 
         // Input parameters for the stored procedure
-        request.input('Action', sql.Int, 3);  // Action 3 for updating IsActive to false
+        request.input('Action', sql.Int, 6);  // Action 3 for updating IsActive to false
         request.input('CoupanCode', sql.VarChar(50), CoupanCode);
 
         // Execute the stored procedure
-        await request.execute('InsertCoupanOffer');
+        await request.execute('[a18dfc62d].[Proc_InsertCoupanMaster]');
 
         res.status(200).json({ message: 'Coupon redeemed successfully' });
     } catch (err) {
