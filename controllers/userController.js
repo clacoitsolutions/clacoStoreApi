@@ -732,7 +732,7 @@ export const offermaster = async (req, res) => {
 
 export const customermaster = async (req, res) => {
     try {
-        const {Name,emailid,mobile,Password} = req.body;
+        const {Name,emailid,mobile,Password} = req.body;    
 
         const pool = req.pool;
         await pool.connect();
@@ -757,3 +757,81 @@ export const customermaster = async (req, res) => {
     }
 }    
  
+export const mobilenodetails = async (req, res) => {
+    try {
+        // Destructure data from the request body
+        const { MobileNo } = req.body;
+
+        // Get the database pool from the request object
+        const pool = req.pool;
+
+        // Connect to the database
+        await pool.connect();
+
+        // Check if the mobile number exists in the database
+        const checkIfExistsQuery = `SELECT Name,MobileNo,EmailAddress,CustomerId,ReferCode FROM tbl_CustomerMaster WHERE mobileno = @mobileno`;
+        const requestCheck = pool.request();
+        requestCheck.input('mobileno', MobileNo);
+        const resultCheck = await requestCheck.query(checkIfExistsQuery);
+        const customerExists = resultCheck.recordset.length > 0;
+
+        if (!customerExists) {
+            // Mobile number does not exist, insert default data using stored procedure
+            const insertDefaultQuery = `
+                EXEC Proc_InserCustomerAccountWeb
+                    @mobileno = @mobileno,
+                    @name = 'Default Name',
+                    @EmailId = 'default@email.com',
+                    
+                    @UsedReferal = 'defaultreferalcode',
+                    @Action = 102
+            `;
+            const requestInsert = pool.request();
+            requestInsert.input('mobileno', MobileNo);
+            const resultInsert = await requestInsert.query(insertDefaultQuery);
+
+            // Send success response with inserted data
+            const insertedData = resultInsert.recordset;
+            res.status(201).json({ message: 'Data inserted successfully', data: insertedData });
+        } else {
+            // Mobile number exists, retrieve and return customer details
+            const customerDetails = resultCheck.recordset[0];
+            res.status(200).json({ message: 'Customer details retrieved successfully', data: customerDetails });
+        }
+
+    } catch (err) {
+        // Handle errors
+        console.error('SQL error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+ 
+export const Getreview = async (req, res) => {
+    try {
+        const {CustomerId,ProductCode,reviewstatus,Description,image} = req.body;    
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input('CustomerId', CustomerId);
+        request.input('ProductCode',ProductCode);
+        request.input('reviewstatus',reviewstatus);
+        request.input('Description',Description);
+  
+        request.input('image',image);
+
+        const result = await request.execute('proc_addReview');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Review Inserted Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}    
+
+
+
