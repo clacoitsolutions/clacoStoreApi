@@ -84,3 +84,28 @@ export const getcategorycategorywise = async (req, res) => {
 // }
 
 
+export const HomeProductPage = async (req, res) => {
+    try {
+       
+  
+      // Assuming you have configured your database connection pool
+      const pool = req.pool;
+      await pool.connect();
+      const request = pool.request();
+  
+   
+      const result = await request.query("SELECT * FROM tbl_Homepageproducts WHERE Isactive = 1 ORDER BY Indexing DESC");
+
+  
+      const cities = result.recordset;
+  
+      res.status(200).json({ cities });
+  
+    } 
+    catch (error) {
+  
+      console.error("SQL error", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
