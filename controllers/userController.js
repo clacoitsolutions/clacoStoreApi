@@ -831,4 +831,30 @@ export const Getreview = async (req, res) => {
         console.error('sql server:',error)
         res.status(500).json({error:'Internal Server error'});
     }
+}  
+
+export const DeliveryOrderDetails = async (req, res) => {
+    try {
+        const {ContactNo} = req.body;    
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        
+        request.input('ContactNo',ContactNo);
+        request.input('Action',5);
+  
+        
+
+        const result = await request.execute('Proc_InsertUpdateOrderstatus');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:"Review Inserted Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
 }    

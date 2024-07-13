@@ -1,7 +1,7 @@
 import express from "express"; 
 
 
-import {updatecartsizeagync,customermaster,Getreview,mobilenodetails,offermaster,getrating,getSize,cartlist1,createregistartionController ,ramujanam,DisplayAddress,quantity,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles, Address } from "../controllers/userController.js";
+import {updatecartsizeagync,customermaster,DeliveryOrderDetails,Getreview,mobilenodetails,offermaster,getrating,getSize,cartlist1,createregistartionController ,ramujanam,DisplayAddress,quantity,ContactUsss,deleteaddtocart, logincontroller, forgetpasswordcontroller,getOrderConfirmDetails,addtoCartcontroller,Viewbilldetails,ChangePassword,loginotpcontroller,MyProfile,MyProfiles, Address } from "../controllers/userController.js";
  
 
 
@@ -53,7 +53,7 @@ router.post("/Mobilealldetails",mobilenodetails)
 
 router.post("/getreview",Getreview)
 
-
+router.post("/deliveryorderdetails",DeliveryOrderDetails)
  
 
 export default router;
