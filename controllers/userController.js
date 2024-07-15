@@ -835,14 +835,14 @@ export const Getreview = async (req, res) => {
 
 export const DeliveryOrderDetails = async (req, res) => {
     try {
-        const {ContactNo} = req.body;    
+        const {CustomerId} = req.body;    
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
         
-        request.input('ContactNo',ContactNo);
+        request.input('CustomerId',CustomerId);
         request.input('Action',5);
   
         
