@@ -832,29 +832,175 @@ export const Getreview = async (req, res) => {
         res.status(500).json({error:'Internal Server error'});
     }
 }  
+ 
+
+// export const DeliveryOrderDetails = async (req, res) => {
+ 
+//     try {
+//         const { CustomerId } = req.body;
+
+     
+       
+//         requestSP.input('CustomerId', CustomerId);
+//         requestSP.input('Action', 10);
+//         await requestSP.execute('Proc_InsertUpdateOrderstatus');
+
+//         // Fetch data from tbl_Ecommarceproductmaster using the temporary table #ItemCodes
+//         const query = `
+//             SELECT p.*
+//             FROM tbl_Ecommarceproductmaster p
+//             INNER JOIN #ItemCodes i ON p.ProductCode = i.ItemCode;
+//         `;
+
+//         const requestQuery = pool.request();
+//         const result = await requestQuery.query(query);
+
+//         // Extract the fetched data
+//         const productData = result.recordset;
+
+//         // Send response back to client
+//         res.status(200).json({ message: "Product Data Retrieved Successfully", data: productData });
+//     } catch (error) {
+//         console.error('SQL Server Error:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     } finally {
+//         try {
+//             // Clean up: Drop temporary tables if needed
+//             const cleanupQuery = `
+//                 IF OBJECT_ID('tempdb..#ItemCodes') IS NOT NULL
+//                     DROP TABLE #ItemCodes;
+//             `;
+//             const requestCleanup = pool.request();
+//             await requestCleanup.query(cleanupQuery);
+
+//             // Close SQL connection
+//             if (pool) await pool.close();
+//         } catch (err) {
+//             console.error('Error closing SQL connection:', err);
+//         }
+//     }
+
+// export const DeliveryOrderDetails = async (req, res) => {
+//     try {
+//         const { CustomerId } = req.body;
+
+//         const pool = req.pool;
+//         await pool.connect();
+//         const request = pool.request();
+//         // Execute stored procedure with inputs
+//         const result = await request
+//             .input('CustomerId', CustomerId)
+//             .input('Action', 10)
+//             .execute('Proc_InsertUpdateOrderstatus');
+
+//         // SQL query to create and fetch data from temporary tables
+//         const productQuery = `
+//             -- Step 1: Select order details for the specified customer
+//             SELECT *
+//             INTO #OrderDetailss
+//             FROM tbl_OnlineOrderDetail
+//             WHERE customerid ='CUST000385';
+
+//             -- Step 2: Retrieve order IDs with a delivered status
+//             SELECT OrderID
+//             INTO #DeliveredOrderss
+//             FROM tbl_OnlineOrderDetail
+//             WHERE customerid = 'CUST000385' AND Deliverystatus = 'delivered';
+
+//             -- Step 3: Fetch item codes using the retrieved order IDs
+//             SELECT ItemCode
+//             INTO #ItemCodes
+//             FROM tbl_onlineorderitemdetail
+//             WHERE OrderID IN (SELECT OrderID FROM #DeliveredOrderss);
+
+//             -- Step 4: Find product names using the item codes
+//             SELECT p.*
+//             FROM tbl_Ecommarceproductmaster p
+//             INNER JOIN #ItemCodes i ON p.ProductCode = i.ItemCode;
+
+//             -- Clean up temporary tables
+//             DROP TABLE #OrderDetailss;
+//             DROP TABLE #DeliveredOrderss;
+//             DROP TABLE #ItemCodes;
+//         `;
+
+//         // Execute the entire productQuery as a single batch
+//         const productResult = await request.query(productQuery);
+
+//         const returnedData = productResult.recordset;
+
+//         res.status(200).json({ message: "Products fetched successfully", data: returnedData });
+//     } catch (error) {
+//         console.error('SQL Server Error:', error);
+//         res.status(500).json({ error: 'Internal Server Error' });
+//     }
+// };
+
+
 
 export const DeliveryOrderDetails = async (req, res) => {
     try {
-        const {CustomerId} = req.body;    
+        const { CustomerId } = req.body;
+
+        if (!CustomerId) {
+            return res.status(400).json({ error: 'Customer ID is required' });
+        }
 
         const pool = req.pool;
-        await pool.connect();
         const request = pool.request();
+        await pool.connect();
 
-        
-        request.input('CustomerId',CustomerId);
-        request.input('Action',5);
-  
-        
+        // Step 1: Create #OrderDetailss temporary table and insert data
+        await request.query(`
+            SELECT *
+            INTO #OrderDetailss
+            FROM tbl_OnlineOrderDetail
+            WHERE customerid = @CustomerId;
+        `, [{
+            name: 'CustomerId',
+            type: 'Int',
+            value: CustomerId
+        }]);
 
-        const result = await request.execute('Proc_InsertUpdateOrderstatus');
+        // Step 2: Create #DeliveredOrderss temporary table and insert data
+        await request.query(`
+            SELECT OrderID
+            INTO #DeliveredOrderss
+            FROM tbl_OnlineOrderDetail
+            WHERE customerid = @CustomerId AND Deliverystatus = 'delivered';
+        `, [{
+            name: 'CustomerId',
+            type: 'Int',
+            value: CustomerId
+        }]);
+
+        // Step 3: Create #ItemCodes temporary table and insert data
+        await request.query(`
+            SELECT ItemCode
+            INTO #ItemCodes
+            FROM tbl_onlineorderitemdetail
+            WHERE OrderID IN (SELECT OrderID FROM #DeliveredOrderss);
+        `);
+
+        // Retrieve product details using the temporary tables
+        const result = await request.query(`
+            SELECT p.*
+            FROM tbl_Ecommarceproductmaster p
+            INNER JOIN #ItemCodes i ON p.ProductCode = i.ItemCode;
+        `);
+
+        // Clean up temporary tables
+        await request.query('DROP TABLE #OrderDetailss;');
+        await request.query('DROP TABLE #DeliveredOrderss;');
+        await request.query('DROP TABLE #ItemCodes;');
 
         const returnedData = result.recordset;
 
-        res.status(200).json({message:"Review Inserted Successfully",data:returnedData})
-    }
-    catch(error){
-        console.error('sql server:',error)
-        res.status(500).json({error:'Internal Server error'});
-    }
-}    
+        res.status(200).json({ message: "Products fetched successfully", data: returnedData });
+    } catch (error) {
+        console.error('SQL Server Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }  
+};
+
+

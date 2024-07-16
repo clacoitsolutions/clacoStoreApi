@@ -1,40 +1,31 @@
-export const trackorder = async (req, res) => {
-    try {
-        // Extract orderId from request body
-        const { OrderId } = req.body;
+export const trackorder =async (req,res)=>{
 
-        // Check if OrderId is provided
-        if (!OrderId) {
-            return res.status(400).json({ error: 'OrderId is required' });
-        }
+    try{
 
-        console.log('OrderId:', OrderId);
- 
+        const {OrderId }= req.body;
+
         const pool = req.pool;
         await pool.connect();
-        
-        const request = await pool.request();
-        
-        
+        const request= pool.request();
 
-        // Set input parameters for the stored procedure
-        request.input('OrderId', OrderId);
-        request.input('Action', 1);
 
-        // Execute the stored procedure
+        request.input("OrderId",OrderId);
+        
+        
+        request.input("Action",10);
+
         const result = await request.execute('Proc_OrderTracking');
 
-
         const returnedData = result.recordset;
- 
-        // Send a success response along with the order status
-        res.status(200).json({ message: 'Order status retrieved successfully', data: returnedData });
-    } catch (err) {
-        // Handle errors
-        console.error('SQL error:', err);
-        res.status(500).json({ error: 'Internal Server Error' });
+
+        res.status(200).json({message:"Whishlist Successfully",data:returnedData})
     }
-};
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}
+
 
 export const cancelorder = async (req,res) =>{
   
@@ -211,6 +202,35 @@ export const Bindmainmenuu =async (req,res)=>{
     }
 }
 
+export const trackorderdate =async (req,res)=>{
+
+    try{
+
+        const {Orderid,CustomerId }= req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request= pool.request();
+
+
+        request.input("Action",2);
+        request.input("Orderid",Orderid);
+        request.input("CustomerId",CustomerId);
+        
+        
+     
+
+        const result = await request.execute('proc_BindCustomerDashBoard');
+
+        const returnedData = result.recordset;
+
+        res.status(200).json({message:" Your Data Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+}
 
 
 
