@@ -30,15 +30,15 @@ export const trackorder =async (req,res)=>{
 export const cancelorder = async (req,res) =>{
   
     try {
-        const{OrderId,CancelReason}=req.body;
+        const{OrderId}=req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
         request.input("OrderId",OrderId);
-        request.input("CancelReason",CancelReason);
-        request.input("Action",1)
+         
+        request.input("Action",26)
 
         const result  = await request.execute('proc_CancelOrder');
         const returnedData = result.recordset;
@@ -52,6 +52,38 @@ export const cancelorder = async (req,res) =>{
         res.status(500).json({error:'Internal Server Error'});
     }
 };
+ 
+export const insertcancelorder = async (req,res) =>{
+  
+    try {
+        const{OrderId,DeliveryStatus,CancelReason,OrderStatus,CancelDate}=req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        request.input("OrderId",OrderId);
+         
+        request.input("DeliveryStatus",DeliveryStatus);
+        request.input("CancelReason",CancelReason);
+        request.input("OrderStatus",OrderStatus);
+        request.input("CancelDate",CancelDate);
+        
+        request.input("Action",25)
+
+        const result  = await request.execute('proc_CancelOrder');
+        const returnedData = result.recordset;
+
+        res.status(201).json({message:'Data Inserted Successfully',data:returnedData});
+
+    }
+
+    catch(error){
+        console.error('sql server:',error);
+        res.status(500).json({error:'Internal Server Error'});
+    }
+};
+
 
 export const ReturnOrder = async (req,res) =>{
   
@@ -201,6 +233,7 @@ export const Bindmainmenuu =async (req,res)=>{
         res.status(500).json({error:'Internal Server error'});
     }
 }
+ 
 
 export const trackorderdate =async (req,res)=>{
 
@@ -212,14 +245,11 @@ export const trackorderdate =async (req,res)=>{
         await pool.connect();
         const request= pool.request();
 
-
+            
         request.input("Action",2);
         request.input("Orderid",Orderid);
         request.input("CustomerId",CustomerId);
-        
-        
-     
-
+         
         const result = await request.execute('proc_BindCustomerDashBoard');
 
         const returnedData = result.recordset;
@@ -230,11 +260,31 @@ export const trackorderdate =async (req,res)=>{
         console.error('sql server:',error)
         res.status(500).json({error:'Internal Server error'});
     }
-}
+}  
 
+export const TotalReview =async (req,res)=>{
 
+    try{
 
+        const {ProductId}= req.body;
 
+        const pool = req.pool;
+        await pool.connect();
+        const request= pool.request();
 
+            
+        request.input("Action",724);
+        request.input("ProductId",ProductId);
+        
+         
+        const result = await request.execute('Proc_GetProductDetail_Updated');
 
+        const returnedData = result.recordset;
 
+        res.status(200).json({message:" Your Data Successfully",data:returnedData})
+    }
+    catch(error){
+        console.error('sql server:',error)
+        res.status(500).json({error:'Internal Server error'});
+    }
+} 

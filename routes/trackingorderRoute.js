@@ -1,5 +1,5 @@
 import express from "express"; 
-import {trackorderdate,Bindmainmenuu,AddWishlist,trackorder,cancelorder,ReturnOrder,Wishlist ,deletewishlist} from "../controllers/trackorderController.js";
+import {trackorderdate,Bindmainmenuu,insertcancelorder,AddWishlist,TotalReview,trackorder,cancelorder,ReturnOrder,Wishlist ,deletewishlist} from "../controllers/trackorderController.js";
 
 const router = express.Router();
 
@@ -16,6 +16,10 @@ router.delete("/DeleteWishlist",deletewishlist)
 router.post("/AddWishlist1",AddWishlist)
 
 router.get("/Bindmain",Bindmainmenuu)
+
 router.post("/trackorderdate",trackorderdate)
 
+router.post("/insertcanelorder",insertcancelorder)
+
+router.post("/totalreview",TotalReview)
 export default router;
