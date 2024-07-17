@@ -273,11 +273,11 @@ export const TotalReview =async (req,res)=>{
         const request= pool.request();
 
             
-        request.input("Action",724);
-        request.input("ProductId",ProductId);
+        request.input("Action",153);
+        request.input("ProductCode",ProductId);
         
          
-        const result = await request.execute('Proc_GetProductDetail_Updated');
+        const result = await request.execute('proc_GetSingleProductView');
 
         const returnedData = result.recordset;
 
