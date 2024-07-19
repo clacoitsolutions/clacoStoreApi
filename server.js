@@ -16,8 +16,8 @@ import mywalletRoute from "./routes/mywalletRoute.js";
 import SearchRoute from "./routes/SearchRoute.js";
 import FillterRoute from "./routes/FillterRoute.js";
 import myprofileRoute from "./routes/myprofileRoute.js";
-import CouponRoutes from "./routes/CoupanRoute.js"
-
+import CouponRoutes from "./routes/CoupanRoute.js";
+import PaymentRoute from "./routes/PaymentRoute.js";
 const {ConnectionPool} = pkg
 const app = express();
 
@@ -59,8 +59,8 @@ app.use("/",FillterRoute);
 app.use("/",trackingorderRoute);
 app.use("/", deliverAdress);
 app.use("/", GetCity);
-app.use("/", CouponRoutes)
- 
+app.use("/", CouponRoutes);
+ app.use("/",PaymentRoute);
 
 app.use("/",OrderListRoute);
 app.use("/", mywalletRoute);
