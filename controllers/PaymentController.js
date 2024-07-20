@@ -69,7 +69,7 @@ export const BankPAyments = async (req, res) => {
 export const CardApi = async (req, res) => {
     try {
         // Validate input parameters
-        const { CardNumber,CVV,ExpireDate,CustomerId,HolderName,IsActive} = req.body;
+        const {CardNumber,CVV,ExpireDate,CustomerId,HolderName,IsActive} = req.body;
 
         const pool = req.pool;
         await pool.connect();
@@ -91,10 +91,9 @@ export const CardApi = async (req, res) => {
         const result = await request.execute("PROC_CardNumber");
 
         // Retrieve the order items from the result
-        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
-
+        const returnedData = result.recordset;
         // Send a success response along with the returned data and a success message
-        res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+        res.status(200).json({ message: 'Order items retrieved successfully', data: returnedData });
 
     } catch (error) {
         // Handle errors
