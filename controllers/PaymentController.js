@@ -25,7 +25,7 @@ export const BankPayment = async (req, res) => {
         const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
 
         // Send a success response along with the returned data and a success message
-        res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+        res.status(200).json({ message: 'Order items retrieved successfully' });
 
     } catch (error) {
         // Handle errors
@@ -187,6 +187,105 @@ export const ShowUPIApi = async (req, res) => {
         request.input("CustomerId", CustomerId);
          
         request.input("Action", "2");
+        // request.input("OrderId", orderId);
+
+        // Execute the stored procedure
+        const result = await request.execute("PROC_UPIPayment");
+
+        // Retrieve the order items from the result
+        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data and a success message
+        res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+
+    } catch (error) {
+        // Handle errors
+        console.error("SQL error", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}; 
+
+
+
+export const ClickBankPayment = async (req, res) => {
+    try {
+        // Validate input parameters
+        const { CustomerId } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        // Set up input parameters for the stored procedure
+       
+        request.input("CustomerId", CustomerId);
+         
+        request.input("Action", "3");
+        // request.input("OrderId", orderId);
+
+        // Execute the stored procedure
+        const result = await request.execute("sp_InsertOrUpdateBankDetails");
+
+        // Retrieve the order items from the result
+        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data and a success message
+        res.status(200).json({ message: '', orderItems: orderItems });
+
+    } catch (error) {
+        // Handle errors
+        console.error("SQL error", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}; 
+
+
+export const ClickCardApi = async (req, res) => {
+    try {
+        // Validate input parameters
+        const { CustomerId } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        // Set up input parameters for the stored procedure
+       
+        request.input("CustomerId", CustomerId);
+         
+        request.input("Action", "3");
+        // request.input("OrderId", orderId);
+
+        // Execute the stored procedure
+        const result = await request.execute("PROC_CardNumber");
+
+        // Retrieve the order items from the result
+        const orderItems = result.recordset; // Assuming the returned data is in the form of a recordset
+
+        // Send a success response along with the returned data and a success message
+        res.status(200).json({ message: 'Order items retrieved successfully', orderItems: orderItems });
+
+    } catch (error) {
+        // Handle errors
+        console.error("SQL error", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}; 
+
+export const CLICKkUPIAPI = async (req, res) => {
+    try {
+        // Validate input parameters
+        const { CustomerId } = req.body;
+
+        const pool = req.pool;
+        await pool.connect();
+        const request = pool.request();
+
+        // Set up input parameters for the stored procedure
+       
+        request.input("CustomerId", CustomerId);
+         
+        request.input("Action", "3");
         // request.input("OrderId", orderId);
 
         // Execute the stored procedure
