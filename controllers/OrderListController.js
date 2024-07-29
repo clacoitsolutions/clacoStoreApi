@@ -75,14 +75,14 @@ export const orderlistcontroller = async (req, res) => {
 export const deletecart = async (req,res)=>{
 
     try{
-        const{CustomerID,cartlistid}=req.body;
+        const{ cartlistid}=req.body;
 
         const pool = req.pool;
         await pool.connect();
         const request = pool.request();
 
 
-        request.input('UserCode',CustomerID);
+        
         request.input('ProductID',cartlistid);
         request.input('Action',1);
 
@@ -171,7 +171,7 @@ export const CancelOrder = async (req, res) => {
 export const postOnlineOrder = async (req, res) => {
     try {
         // Validate input parameters
-        const { OrderId,customerid,grossamount,deliverycharges,iscoupenapplied,coupenamount,deliveryaddressid,paymentmode,paymentstatus,NetPayable,GSTAmount } = req.body;
+        const { customerid,grossamount,deliverycharges,iscoupenapplied,coupenamount,deliveryaddressid,paymentmode,paymentstatus,NetPayable,GSTAmount } = req.body;
 
         const pool = req.pool;
         await pool.connect();

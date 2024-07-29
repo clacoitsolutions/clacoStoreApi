@@ -5,7 +5,7 @@ import {color,size,LowToHigh,HighToLow} from '../controllers/FillterController.j
 const router = express.Router();
 
 
-router.get("/color",color)
+router.post("/color",color)
 
 router.get("/getsize",size)
 
